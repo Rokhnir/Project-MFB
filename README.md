@@ -1,4 +1,4 @@
-# Project-MFB
+# Project-MFB [EN]
 Project-MFB is a final project whose goal is to remake DOOM using C and GFXlib.
 
 ## Objectifs : 
@@ -25,11 +25,10 @@ Project-MFB is a final project whose goal is to remake DOOM using C and GFXlib.
  - Kylmegawar
  - Psycotickyll
  - Allow
+<br><br><br><br><br>
 
 
-
-
-# Project-MFB
+# Project-MFB [FR]
 Project-MFB est un projet de fin d'année qui consiste en la réécriture de DOOM en utilisant le langage C et GFXlib.
 
 ## Objectifs : 
