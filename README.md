@@ -16,7 +16,9 @@ Project-MFB is a final project whose goal is to remake DOOM using C and GFXlib.
 
 
 ## Controls :
- - ZQSD pour les déplacements
+ - Z for moving forward
+ - S for moving backward
+ - Q and D for the camera
  - To come
 
 
@@ -46,7 +48,9 @@ Project-MFB est un projet de fin d'année qui consiste en la réécriture de DOO
 
 
 ## Contrôles :
- - ZQSD pour les déplacements
+ - Z pour avancer
+ - S pour reculer
+ - Q et D pour la caméra
  - À venir
 
 
