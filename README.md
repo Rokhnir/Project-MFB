@@ -12,12 +12,12 @@ Project-MFB is a final project whose goal is to remake DOOM using C and GFXlib.
 ## Main mecanics :
  - Raycasting
  - Fake3D
- - À venir
+ - To come
 
 
 ## Controls :
  - ZQSD pour les déplacements
- - À venir
+ - To come
 
 
 ### Credits : 
@@ -42,7 +42,7 @@ Project-MFB est un projet de fin d'année qui consiste en la réécriture de DOO
 ## Mécaniques principales :
  - Raycasting
  - Fake3D
- -  À venir
+ - À venir
 
 
 ## Contrôles :
