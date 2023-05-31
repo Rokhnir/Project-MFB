@@ -1,7 +1,7 @@
 # Project-MFB [EN]
 Project-MFB is a final project whose goal is to remake DOOM using C and GFXlib.
 
-## Objectifs : 
+## Objectives : 
  - Setup of a raycasting : Ongoing
  - Setup of a Fake3D : To come
  - Creation of a basic room : To come
