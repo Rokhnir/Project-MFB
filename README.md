@@ -1,7 +1,7 @@
 # Project-MFB [EN]
 Project-MFB is a final project whose goal is to remake DOOM using C and GFXlib.
 
-## Objectives : 
+# Objectives : 
  - Setup of a raycasting : Ongoing
  - Setup of a Fake3D : To come
  - Creation of a basic room : To come
@@ -9,53 +9,27 @@ Project-MFB is a final project whose goal is to remake DOOM using C and GFXlib.
  - Qualitative textures : To come
 
 
-## Main mecanics :
+# Main mecanics :
  - Raycasting
  - Fake3D
  - To come
 
 
-## Controls :
+# Controls :
  - Z for moving forward
  - S for moving backward
  - Q and D for the camera
  - To come
 
 
-### Credits : 
+# Credits : 
  - Rokhnir
  - Kylmegawar
  - Psycotickyll
  - Allow
-<br><br><br>
 
 
-# Project-MFB [FR]
-Project-MFB est un projet de fin d'année qui consiste en la réécriture de DOOM en utilisant le langage C et GFXlib.
-
-## Objectifs : 
- - Mettre en place un raycasting : En cours
- - Mettre en place une Fake3D : À venir
- - Faire une salle basique : À venir
- - IA pour les PNJs : À venir
- - Textures de qualité : À venir
+# License
 
 
-## Mécaniques principales :
- - Raycasting
- - Fake3D
- - À venir
-
-
-## Contrôles :
- - Z pour avancer
- - S pour reculer
- - Q et D pour la caméra
- - À venir
-
-
-### Crédits : 
- - Rokhnir
- - Kylmegawar
- - Psycotickyll
- - Allow
+The ISC License 2023 - URSI. Please have a look at the [LICENSE](LICENSE) for more details.
