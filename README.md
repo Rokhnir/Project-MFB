@@ -1,5 +1,5 @@
 # Project-MFB
-A final project whose goal is to remake DOOM using C and GFXlib.
+A final project whose goal is to remake a simplified version of DOOM using C and GFXlib.
 
 # Table of contents
 
