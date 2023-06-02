@@ -34,6 +34,6 @@ A final project whose goal is to remake DOOM using C and GFXlib.
 
 # License
 
-The ISC License 2023 - URSI. Please have a look at the [LICENSE](LICENSE) for more details.
+ISC License 2023 - URSI. Please have a look at the [LICENSE](LICENSE) for more details.
 
 [(Back to top)](#table-of-contents)
