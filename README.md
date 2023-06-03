@@ -4,7 +4,7 @@ A final project whose goal is to remake a simplified version of DOOM using C and
 # Table of contents
 
 - [Objectives](#objectives)
-- [Main mecanics](#main-mecanics)
+- [Main mechanics](#main-mechanics)
 - [Controls](#controls)
 - [License](#license)
 
@@ -18,16 +18,16 @@ A final project whose goal is to remake a simplified version of DOOM using C and
 
 # Objectives
 
- - Setup of the raycasting : Ongoing
+ - Setup of the ray casting : Ongoing
  - Setup of the Fake3D : To come
  - Creation of a basic room : To come
  - IA for the NPCs : To come
  - Qualitative textures : To come
 
 
-# Main mecanics
+# Main mechanics
 
- - Raycasting
+ - Ray casting
  - Fake3D
  - To come
 
