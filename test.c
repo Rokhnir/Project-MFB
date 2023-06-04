@@ -39,13 +39,34 @@
 */
 void gestionEvenement(EvenementGfx evenement);
 void loop();
+void setup_map_from_file_in_param(char *file_name);
+
 int worldMap[mapWidth][mapHeight];
+
+void setup_map_from_file_in_param(char *file_name)
+{
+    FILE *file = fopen(file_name, "r");
+
+    if (file == NULL) {
+        printf("Impossible d'ouvrir le fichier.\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < mapHeight; i++) {
+        for (int j = 0; j < mapWidth; j++) {
+            fscanf(file, "%d", &worldMap[j][i]);
+        }
+    }
+
+    fclose(file);
+}
 
 int main(int argc, char **argv)
 {
-    
+    //setup map from file "map"
+setup_map_from_file_in_param("map");
     /*------------MAP--------------------*/
-
+/*
 
 
     FILE *file = fopen("map", "r");
@@ -72,6 +93,7 @@ int main(int argc, char **argv)
     }
 
     /*----------------------------------*/
+
 
     initialiseGfx(argc, argv);
     prepareFenetreGraphique("Doom", screenWidth, screenHeight);
@@ -148,6 +170,10 @@ void gestionEvenement(EvenementGfx evenement){
     case Clavier:
         switch (caractereClavier())
         {
+            case 'M':
+            case 'm':
+                setup_map_from_file_in_param("map2");
+                break;
         case 'X':
         case 'x':
             termineBoucleEvenements();
