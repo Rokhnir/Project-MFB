@@ -10,6 +10,10 @@
 #define mapWidth 24
 #define mapHeight 24
 
+//int mapWidth = 24;
+//int mapHeight = 24;
+
+
 /*int worldMap[mapWidth][mapHeight] =
     {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -40,11 +44,55 @@
 void gestionEvenement(EvenementGfx evenement);
 void loop();
 void setup_map_from_file_in_param(char *file_name);
+void getMapDimensions(const char* filename, int* height, int* width);
 
 int worldMap[mapWidth][mapHeight];
 
-void setup_map_from_file_in_param(char *file_name)
-{
+void getMapDimensions(const char* filename, int* height, int* width) {
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Erreur lors de l'ouverture du fichier.\n");
+        exit(1);
+    }
+
+    int ch;
+    int tempWidth = 0;
+    int rowCount = 0;
+    int maxWidth = 0;
+
+    // Calcul de la largeur et de la hauteur de la carte
+    while ((ch = fgetc(file)) != EOF) {
+        if (ch == '\n') {
+            rowCount++;
+            if (tempWidth > maxWidth) {
+                maxWidth = tempWidth;
+            }
+            tempWidth = 0;
+        } else if (ch != ' ') {
+            tempWidth++;
+        }
+    }
+
+    *height = rowCount;
+    *width = maxWidth;
+
+    fclose(file);
+}
+
+/*int main() {
+    int height, width;
+    getMapDimensions("map.txt", &height, &width);
+    printf("Hauteur : %d\n", height);
+    printf("Largeur : %d\n", width);
+
+    return 0;
+}*/
+void reset_map(char *file_name){
+    int height, width;
+    getMapDimensions(file_name, &height, &width);
+    printf("Hauteur : %d\n", height);
+    printf("Largeur : %d\n", width);
+    
     FILE *file = fopen(file_name, "r");
 
     if (file == NULL) {
@@ -52,8 +100,29 @@ void setup_map_from_file_in_param(char *file_name)
         exit(1);
     }
 
-    for (int i = 0; i < mapHeight; i++) {
-        for (int j = 0; j < mapWidth; j++) {
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            fscanf(file, "%d", &worldMap[j][i]);
+        }
+    }
+
+    fclose(file);
+}
+void setup_map_from_file_in_param(char *file_name)
+{
+    int height, width;
+    getMapDimensions(file_name, &height, &width);
+    printf("Hauteur : %d\n", height);
+    printf("Largeur : %d\n", width);
+    FILE *file = fopen(file_name, "r");
+
+    if (file == NULL) {
+        printf("Impossible d'ouvrir le fichier.\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
             fscanf(file, "%d", &worldMap[j][i]);
         }
     }
@@ -63,36 +132,8 @@ void setup_map_from_file_in_param(char *file_name)
 
 int main(int argc, char **argv)
 {
-    //setup map from file "map"
-setup_map_from_file_in_param("map");
-    /*------------MAP--------------------*/
-/*
 
-
-    FILE *file = fopen("map", "r");
-
-    if (file == NULL) {
-        printf("Impossible d'ouvrir le fichier.\n");
-        return 1;
-    }
-
-    for (int i = 0; i < mapHeight; i++) {
-        for (int j = 0; j < mapWidth; j++) {
-            fscanf(file, "%d", &worldMap[j][i]);
-        }
-    }
-
-    fclose(file);
-
-
-    for (int i = 0; i < mapHeight; i++) {
-        for (int j = 0; j < mapWidth; j++) {
-            printf("%d ", worldMap[j][i]);
-        }
-        printf("\n");
-    }
-
-    /*----------------------------------*/
+    setup_map_from_file_in_param("map");
 
 
     initialiseGfx(argc, argv);
@@ -170,9 +211,14 @@ void gestionEvenement(EvenementGfx evenement){
     case Clavier:
         switch (caractereClavier())
         {
+            case 'Q':
+            case 'q':
+                reset_map("map");
+                break;
             case 'M':
             case 'm':
-                setup_map_from_file_in_param("map2");
+                reset_map("map2_propre");
+                setup_map_from_file_in_param("map2_propre");
                 break;
         case 'X':
         case 'x':

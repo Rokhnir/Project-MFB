@@ -3,6 +3,7 @@
 
 #define SIZE 24 // Taille de la matrice
 
+
 void mirrorMatrix(int matrix[][SIZE]) {
     int temp;
 
