@@ -10,7 +10,7 @@
 #define mapWidth 24
 #define mapHeight 24
 
-int worldMap[mapWidth][mapHeight] =
+/*int worldMap[mapWidth][mapHeight] =
     {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -36,9 +36,10 @@ int worldMap[mapWidth][mapHeight] =
         {1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
-
+*/
 void gestionEvenement(EvenementGfx evenement);
 void loop();
+int worldMap[mapWidth][mapHeight];
 
 double pX;
 double pY;
@@ -56,6 +57,36 @@ double oldPlaneX;
 
 int main(int argc, char **argv)
 {
+    
+    /*------------MAP--------------------*/
+
+
+
+    FILE *file = fopen("map", "r");
+
+    if (file == NULL) {
+        printf("Impossible d'ouvrir le fichier.\n");
+        return 1;
+    }
+
+    for (int i = 0; i < mapHeight; i++) {
+        for (int j = 0; j < mapWidth; j++) {
+            fscanf(file, "%d", &worldMap[j][i]);
+        }
+    }
+
+    fclose(file);
+
+
+    for (int i = 0; i < mapHeight; i++) {
+        for (int j = 0; j < mapWidth; j++) {
+            printf("%d ", worldMap[j][i]);
+        }
+        printf("\n");
+    }
+
+    /*----------------------------------*/
+
     initialiseGfx(argc, argv);
     prepareFenetreGraphique("Doom", screenWidth, screenHeight);
     pX = hauteurFenetre() * 0.6;
