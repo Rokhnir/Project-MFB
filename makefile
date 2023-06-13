@@ -1,5 +1,5 @@
 test:test.c libisentlib.a
-	gcc -Wall -o output test.c temp/libisentlib.a -lm -lglut -lGL -lX11
+	gcc -Wall -o output test.c temp/libisentlib.a -lm -lglut -lGL -lX11 -pthread libportaudio.a -lrt -lm -lasound -ljack -lsndfile
 
 #############################################################################################################################################################################
 
