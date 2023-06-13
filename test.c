@@ -6,44 +6,26 @@
 #include "gfxlib/include/GfxLib.h"
 #include <pthread.h>
 #include <string.h>
-#include <sndfile.h>
-#include <portaudio.h>
+//#include <sndfile.h>
+//#include <portaudio.h>
 #include <stdbool.h>
 
 #define screenWidth 1920
 #define screenHeight 1080
 #define mapWidth 24
 #define mapHeight 24
-//#define FILENAME "./sus.wav"
 char FILENAME[] = {"BCSIntro.wav"};
+void play_sound(const char *filename) {
+    char command[256];
+    sprintf(command, "aplay %s -d 10", filename);
+    system(command);
+}
 
-/*int worldMap[mapWidth][mapHeight] =
-    {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 4, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 4, 0, 0, 0, 0, 5, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 4, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 4, 0, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
-*/
+void *play_sound_parallel(void *filename) {
+    play_sound((const char *)filename);
+
+    pthread_exit(NULL);
+}
 void gestionEvenement(EvenementGfx evenement);
 void loop();
 int worldMap[mapWidth][mapHeight];
@@ -62,48 +44,12 @@ double angle;
 double oldDirX;
 double oldPlaneX;
 bool loopThreadStarted = false;
-/*void* playSond(void* arg, char* sond);
-void play_sound_parallel(const char *filename);*/
-/*void play_sound(const char *filename) {
-    char command[256];
-    sprintf(command, "aplay %s -d 10", filename);
-    system(command);
-}*/
-/*void play_sound(const char *filename) {
-    ma_result result;
-    ma_engine engine;
-
-    result = ma_engine_init(NULL, &engine);
-    if (result != MA_SUCCESS) {
-        return -1;
-    }
-
-    ma_engine_play_sound(&engine, "sus.wav", NULL);
-
-    ma_engine_uninit(&engine);
-}
-
-
-
-void *play_sound_parallel(void *filename) {
-    play_sound((const char *)filename);
-
-    pthread_exit(NULL);
-}*/
-
-typedef struct {
-    SNDFILE* file;
-    SF_INFO fileInfo;
-    PaStream* stream;
-} SoundData;
 
 void* loopThread(void* arg) {
     lanceBoucleEvenements();
 
     return NULL;
 }
-
-
 int main(int argc, char **argv)
 {
     if (loopThreadStarted == false) {
@@ -144,56 +90,19 @@ int main(int argc, char **argv)
         pX = hauteurFenetre() * 0.6;
         pY = hauteurFenetre() * 0.1;
     }
-// ###################MUSIC###################
-    // Initialisation de PortAudio
-    Pa_Initialize();
+//###################MUSIC###################
 
-    // Ouverture du fichier audio avec libsndfile
-    SF_INFO fileInfo;
-    SNDFILE* file = sf_open(FILENAME, SFM_READ, &fileInfo);
-    if (!file) {
-        printf("Impossible de charger le fichier audio.\n");
-        return 1;
-    }
-
-    // Configuration de PortAudio
-    PaStream* stream;
-    Pa_OpenDefaultStream(&stream, 0, fileInfo.channels, paFloat32, fileInfo.samplerate, paFramesPerBufferUnspecified, NULL, NULL);
-
-    // Démarrage du thread de boucle
     pthread_t thread;
-    //pthread_create(&thread, NULL, loopThread, NULL);*/
     if (loopThreadStarted == false) {
         pthread_create(&thread, NULL, loopThread, NULL);
         loopThreadStarted = true;
     }
+    play_sound(FILENAME);
 
-    // Lecture de la musique
-    Pa_StartStream(stream);
-    Pa_Sleep(500);  // Temps de démarrage pour éviter les artefacts audio
-
-    // Lecture et conversion du contenu du fichier
-    const int BUFSIZE = 1024;
-    float buffer[BUFSIZE * fileInfo.channels];
-    int readCount;
-    while ((readCount = sf_readf_float(file, buffer, BUFSIZE)) > 0) {
-        Pa_WriteStream(stream, buffer, readCount);
-    }
-
-
-    // Fermeture du fichier audio et de PortAudio
-    sf_close(file);
-    Pa_StopStream(stream);
-    Pa_CloseStream(stream);
-    Pa_Terminate();
     return main(argc, argv);
 
-    // Attendre la fin du thread
-    pthread_join(thread, NULL);
-
 // ###################MUSIC###################
-   // lanceBoucleEvenements();
-    //return 0;
+
 }
 
 void loop()
@@ -322,7 +231,12 @@ void gestionEvenement(EvenementGfx evenement){
         case 'Z':
         case 'z':
             pY += hauteurFenetre() * 0.05;
-            break;
+                const char *filename = "pas.wav";
+
+                pthread_t thread;
+                pthread_create(&thread, NULL, play_sound_parallel, (void *)filename);
+                pthread_detach(thread);
+                break;
         case 'S':
         case 's':
             pY -= hauteurFenetre() * 0.05; 
