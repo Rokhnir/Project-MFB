@@ -6,29 +6,18 @@
 #include "gfxlib/include/GfxLib.h"
 #include <pthread.h>
 #include <string.h>
-//#include <sndfile.h>
-//#include <portaudio.h>
 #include <stdbool.h>
+#include "gfxlib/include/WavLib.h"
 
 #define screenWidth 1920
 #define screenHeight 1080
 #define mapWidth 24
 #define mapHeight 24
-char FILENAME[] = {"BCSIntro.wav"};
-void play_sound(const char *filename) {
-    char command[256];
-    sprintf(command, "aplay %s -d 10", filename);
-    system(command);
-}
 
-void *play_sound_parallel(void *filename) {
-    play_sound((const char *)filename);
+static char FILENAME[] = {"BCSIntro.wav"};
+static bool loopThreadStarted = false;
+static bool loopThreadStarted2 = false;
 
-    pthread_exit(NULL);
-}
-void gestionEvenement(EvenementGfx evenement);
-void loop();
-int worldMap[mapWidth][mapHeight];
 
 double pX;
 double pY;
@@ -43,7 +32,35 @@ double dvecY;
 double angle;
 double oldDirX;
 double oldPlaneX;
-bool loopThreadStarted = false;
+
+
+void gestionEvenement(EvenementGfx evenement);
+void loop();
+int worldMap[mapWidth][mapHeight];
+
+void arret_brutal_music(void) {
+    char command[256];
+    sprintf(command, "killall aplay");
+    system(command);
+}
+void play_sound(const char *filename) {
+    char command[256];
+    sprintf(command, "aplay %s -d 1", filename);
+    system(command);
+}
+void play_music(void *arg) {
+    char command[256];
+    sprintf(command, "aplay %s " , FILENAME);
+    system(command);
+}
+void *play_sound_parallel(void *filename) {
+    play_sound((const char *)filename);
+
+    pthread_exit(NULL);
+}
+
+
+
 
 void* loopThread(void* arg) {
     lanceBoucleEvenements();
@@ -53,7 +70,7 @@ void* loopThread(void* arg) {
 int main(int argc, char **argv)
 {
     if (loopThreadStarted == false) {
-        /*------------MAP--------------------*/
+        /*--------------------MAP--------------------*/
 
 
 
@@ -97,11 +114,18 @@ int main(int argc, char **argv)
         pthread_create(&thread, NULL, loopThread, NULL);
         loopThreadStarted = true;
     }
-    play_sound(FILENAME);
+    pthread_t thread2;
+    if (loopThreadStarted2 == false) {
+        pthread_create(&thread2, NULL, play_music, NULL);
+        //pthread_detach(thread2);
+        loopThreadStarted2 = true;
+    }
+
+    pthread_join(thread2, NULL);
 
     return main(argc, argv);
 
-// ###################MUSIC###################
+// ###########################################
 
 }
 
@@ -217,8 +241,9 @@ void gestionEvenement(EvenementGfx evenement){
         {
         case 'X':
         case 'x':
-            //termineBoucleEvenements();
-            strcpy(FILENAME, "sus.wav");
+            arret_brutal_music();
+            termineBoucleEvenements();
+            //strcpy(FILENAME, "sus.wav");
             break;
         case 'F':
         case 'f':
@@ -274,5 +299,3 @@ void gestionEvenement(EvenementGfx evenement){
         break;
     }
 }
-
-
