@@ -17,7 +17,7 @@
 static char FILENAME[] = {"BCSIntro.wav"};
 static bool loopThreadStarted = false;
 static bool loopThreadStarted2 = false;
-
+static char cheatCode[10] = {};
 
 double pX;
 double pY;
@@ -32,6 +32,8 @@ double dvecY;
 double angle;
 double oldDirX;
 double oldPlaneX;
+
+
 
 
 void gestionEvenement(EvenementGfx evenement);
@@ -58,9 +60,24 @@ void *play_sound_parallel(void *filename) {
 
     pthread_exit(NULL);
 }
+void send_letter_to_buffer(char letter) {
+    int i = 0;
+    while (cheatCode[i] != '\0') {
+        i++;
+    }
+    cheatCode[i] = letter;
+    cheatCode[i + 1] = '\0';
+    if (strcmp(cheatCode, "uWu") == 0) {
+        printf("Cheat code sus\n");
+        play_sound_parallel("sus.wav");
+        cheatCode[0] = '\0';
+    }
+    if (i > 10) {
+        cheatCode[0] = '\0';
+    }
+    printf("Cheat code %s\n", cheatCode);
 
-
-
+}
 
 void* loopThread(void* arg) {
     lanceBoucleEvenements();
@@ -239,11 +256,15 @@ void gestionEvenement(EvenementGfx evenement){
     case Clavier:
         switch (caractereClavier())
         {
+
+
         case 'X':
         case 'x':
             arret_brutal_music();
             termineBoucleEvenements();
-            //strcpy(FILENAME, "sus.wav");
+                send_letter_to_buffer(caractereClavier());
+
+                //strcpy(FILENAME, "sus.wav");
             break;
         case 'F':
         case 'f':
@@ -252,7 +273,9 @@ void gestionEvenement(EvenementGfx evenement){
                 modePleinEcran();
             else
                 redimensionneFenetre(screenWidth, screenHeight);
-            break;
+            send_letter_to_buffer(caractereClavier());
+
+                break;
         case 'Z':
         case 'z':
             pY += hauteurFenetre() * 0.05;
@@ -261,11 +284,15 @@ void gestionEvenement(EvenementGfx evenement){
                 pthread_t thread;
                 pthread_create(&thread, NULL, play_sound_parallel, (void *)filename);
                 pthread_detach(thread);
+                send_letter_to_buffer(caractereClavier());
+
                 break;
         case 'S':
         case 's':
-            pY -= hauteurFenetre() * 0.05; 
-            break;
+            pY -= hauteurFenetre() * 0.05;
+                send_letter_to_buffer(caractereClavier());
+
+                break;
 
         case 'Q':
         case 'q':
@@ -275,7 +302,9 @@ void gestionEvenement(EvenementGfx evenement){
             oldPlaneX = planeX;
             planeX = planeX * cos(-0.1) - planeY * sin(-0.1);
             planeY = oldPlaneX * sin(-0.1) + planeY * cos(-0.1);
-            break;
+                send_letter_to_buffer(caractereClavier());
+
+                break;
         case 'D':
         case 'd':
             oldDirX = dirX;
@@ -284,7 +313,13 @@ void gestionEvenement(EvenementGfx evenement){
             oldPlaneX = planeX;
             planeX = planeX * cos(0.1) - planeY * sin(0.1);
             planeY = oldPlaneX * sin(0.1) + planeY * cos(0.1);
-            break;
+                send_letter_to_buffer(caractereClavier());
+
+                break;
+            default:
+                printf("%c\n", caractereClavier());
+                send_letter_to_buffer(caractereClavier());
+                break;
         }
     case ClavierSpecial:
         break;
