@@ -1,38 +1,24 @@
-all : libisentlib.a
+# Chemins des fichiers objets et des fichiers d'en-tête
+obj_dir := ../../temp
+inc_dir := ../include
 
-vpath %.o ../temp
-vpath %.h ../include
+# Liste des fichiers sources
+src_files := BmpLib.c ErreurLib.c ESLib.c GfxLib.c OutilsLib.c SocketLib.c ThreadLib.c VectorLib.c WavLib.c
 
-libisentlib.a: BmpLib.o ErreurLib.o ESLib.o GfxLib.o OutilsLib.o SocketLib.o ThreadLib.o VectorLib.o WavLib.o
-	ar r libisentlib.a BmpLib.o ErreurLib.o ESLib.o GfxLib.o OutilsLib.o SocketLib.o ThreadLib.o VectorLib.o WavLib.o
-	ranlib ../temp/libisentlib.a
+# Liste des fichiers objets nécessaires pour la bibliothèque
+obj_files := $(patsubst %.c, $(obj_dir)/%.o, $(src_files))
 
-BmpLib.o: BmpLib.c BmpLib.h OutilsLib.h
-	gcc -Wall -O2 -o BmpLib.o -c BmpLib.c
+# Règle pour générer la bibliothèque
+libisentlib.a: $(obj_files)
+	ar rcs $@ $^
+	ranlib $@
 
-ESLib.o: ESLib.c ESLib.h ErreurLib.h
-	gcc -Wall -O2 -o ESLib.o -c ESLib.c
+# Règle générale pour la compilation des fichiers objets
+$(obj_dir)/%.o: %.c
+	gcc -Wall -O2 -o $@ -c $< -I$(inc_dir)
 
-ErreurLib.o: ErreurLib.c ErreurLib.h
-	gcc -Wall -O2 -o ErreurLib.o -c ErreurLib.c
-
-GfxLib.o: GfxLib.c GfxLib.h ESLib.h
-	gcc -Wall -O2 -o GfxLib.o -c GfxLib.c -I/usr/include/GL
-
-OutilsLib.o: OutilsLib.c OutilsLib.h
-	gcc -Wall -O2 -o OutilsLib.o -c OutilsLib.c
-
-SocketLib.o: SocketLib.c SocketLib.h
-	gcc -Wall -O2 -o SocketLib.o -c SocketLib.c
-
-ThreadLib.o: ThreadLib.c ThreadLib.h
-	gcc -Wall -O2 -o ThreadLib.o -c ThreadLib.c
-
-WavLib.o: WavLib.c WavLib.h OutilsLib.h
-	gcc -Wall -O2 -o WavLib.o -c WavLib.c -Wno-unused-result
-
-VectorLib.o: VectorLib.c VectorLib.h
-	gcc -Wall -O2 -o VectorLib.o -c VectorLib.c -msse3
+test: test.c libisentlib.a
+	gcc -Wall -o output test.c libisentlib.a -lm -lglut -lGL -lX11
 
 clean:
-	rm -f temp/*.?
+	rm -f $(obj_dir)/*.o libisentlib.a output
