@@ -9,6 +9,7 @@
 
 double Rdistance(double x1, double y1, double x2, double y2);
 void iaEnnemie(Ennemie a);
+void gereEnnemie(Ennemie *tab, int number);
 
 
 #endif //WORKSPACE_OUTILS_H

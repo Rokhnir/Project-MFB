@@ -1,24 +1,35 @@
 #include "struct.h"
 #include "test.h"
+#include <string.h>
+#include "outils.h"
 
-
-void attacks(Ennemie *a);
-void defenses(Ennemie a);
+static Player player;
+Ennemie test;
 
 int main(int argc, char **argv)
 {
-    player.posx = 12;
+    player.posx = 11;
     player.posy = 12;
     player.ammo = 30;
     player.life = 100;
     player.attack = attacks;
     player.defense = defenses;
-    
+
+    test.life = 10;
+    test.posx = 10;
+    test.posy = 12;
+    test.dammage = 10;
+    test.speed = 5;
+    test.rangeView = 17;
+    test.rangeAttack = 17;
+
+
+
     /*------------MAP--------------------*/
 
 
 
-    FILE *file = fopen("map", "r");
+   /* FILE *file = fopen("map", "r");
 
     if (file == NULL) {
         printf("Impossible d'ouvrir le fichier.\n");
@@ -31,7 +42,8 @@ int main(int argc, char **argv)
         }
     }
 
-    fclose(file);
+    fclose(file);*/
+
 
 
     for (int i = 0; i < mapHeight; i++) {
@@ -55,12 +67,61 @@ void attacks(Ennemie *a){
     a->life -= player.equipped.dammage;
 }
 
-void defenses(Ennemie a){
-    srandom(time(NULL));
-    int x = random() % 101;
-    if (x <= 65){
-        player.life -= a.dammage;
+int defenses(Ennemie a){
+   srandom(time(NULL));
+   int x = random() % 101;
+   if (x <= 50){
+        player.life = fmax(player.life - a.dammage, 0);
+   }
+    return 0;
+}
+
+void iaEnnemie(Ennemie a) {
+    double dist = Rdistance(a.posx, a.posy, player.posx, player.posy);
+    if (dist <= a.rangeView) {
+        if (dist <= a.rangeAttack) {
+            player.defense(a);
+        } else {
+            double x = player.posx - a.posx;
+            double y = player.posy - a.posy;
+            if (fabs(x) > fabs(y)) {
+                if (x >= 0) {
+                    a.posx += a.speed;
+                } else {
+                    a.posx -= a.speed;
+                }
+            } else {
+                if (y >= 0) {
+                    a.posy += a.speed;
+                } else {
+                    a.posy -= a.speed;
+                }
+            }
+        }
     }
+}
+
+void afficheAmmo(){
+    char buff[11], buff1[2];
+    sprintf(buff1,"%d",player.equipped.inLoader);
+    strcat(buff,buff1);
+    strcat(buff, " / ");
+    sprintf(buff1,"%d", player.equipped.loader);
+    strcat(buff, buff1);
+    strcat(buff, " ");
+    sprintf(buff1,"%d", player.ammo);
+    strcat(buff, buff1);
+    couleurCourante(255,0,0);
+    epaisseurDeTrait(largeurFenetre()*0.003);
+    afficheChaine(buff,largeurFenetre()*0.015 , 0.95 * largeurFenetre(), 50);
+}
+
+void afficheHp(int debut, int longeur){
+    couleurCourante(128,0,0);
+    rectangle(debut,20,debut + longeur,40);
+    couleurCourante(0,255,0);
+    printf("%f   ", player.life);
+    rectangle(debut,20, ((debut + longeur)/ 100) * player.life , 40);
 }
 
 void loop()
@@ -84,7 +145,7 @@ void loop()
         double rayDirX = dirX + planeX * fovX;
         double rayDirY = dirY + planeY * fovX;
 
-        int steps = fmax(abs(rayDirX), abs(rayDirY));
+        int steps = fmax(fabs(rayDirX), fabs(rayDirY));
         double incY = (!steps) ? 0 : rayDirX / steps;
         double incX = (!steps) ? 0 : rayDirY / steps;
 
@@ -131,15 +192,16 @@ void loop()
         double sino = (ab/(aa*bb));
         int dist = floor(sqrt(pow(xa-pX,2)+pow(ya-pY,2)));
         int lineHeight = screenHeight/dist*20;
-        
+
         int drawStart = -lineHeight / 2 + screenHeight / 2;
         if(drawStart < 0)drawStart = 0;
         int drawEnd = lineHeight / 2 + screenHeight / 2;
         if(drawEnd >= screenHeight)drawEnd = screenHeight - 1;
         //ligne(pX,pY,xa,ya);
         ligne(i,drawStart,i,drawEnd);
+
+
     }
-    
 }
 
 void gestionEvenement(EvenementGfx evenement){
@@ -168,6 +230,9 @@ void gestionEvenement(EvenementGfx evenement){
     case Affichage:
         effaceFenetre(0, 0, 0);
         loop();
+        afficheAmmo();
+        afficheHp(largeurFenetre()/4,largeurFenetre()/2);
+        iaEnnemie(test);
         break;
 
     case Clavier:

@@ -21,7 +21,9 @@
 void gestionEvenement(EvenementGfx evenement);
 void loop();
 int worldMap[mapWidth][mapHeight];
-
+void afficheAmmo();
+void attacks(Ennemie *a);
+int defenses(Ennemie a);
 
 double pX;
 double pY;

@@ -30,9 +30,9 @@ typedef struct{
     int ammo;
     double life;
     void (*attack)(Ennemie*); //Pointer de fonction permet d'utiliser ses fonctions comme des méthodes approche C++
-    void (*defense)();
+    int (*defense)(Ennemie);
     Weapon equipped;
 }Player;
 
-static Player player;
+
 #endif //WORKSPACE_STRUCT_H
