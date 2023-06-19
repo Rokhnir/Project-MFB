@@ -107,7 +107,7 @@ void gestionEvenement(EvenementGfx evenement)
 			image = lisBMPRGB("/image/fusil_front.bmp");
 			break;
 		case 3:
-			image = lisBMPRGB("/image/dubstep_front.bmp");
+			image = lisBMPRGB("/image/dubstep_gun_front.bmp");
 			break;
 		}
 		pixels = BVR2ARVB(image->largeurImage, image->hauteurImage, image->donneesRGB);
