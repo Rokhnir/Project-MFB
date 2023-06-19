@@ -98,7 +98,18 @@ void gestionEvenement(EvenementGfx evenement)
 	switch (evenement)
 	{
 	case Initialisation:
-		image = lisBMPRGB("/home/allow/Downloads/gfxlib/image/fusil_front.bmp");
+		switch (idArme)//IL FAUT INTEGRER QUELQUE PART CET ID
+		{
+		case 1:
+			image = lisBMPRGB("/image/pistol_front.bmp");
+			break;
+		case 2:
+			image = lisBMPRGB("/image/fusil_front.bmp");
+			break;
+		case 3:
+			image = lisBMPRGB("/image/dubstep_front.bmp");
+			break;
+		}
 		pixels = BVR2ARVB(image->largeurImage, image->hauteurImage, image->donneesRGB);
 		texture = creeTexture2D(image->largeurImage, image->hauteurImage, pixels);
 
