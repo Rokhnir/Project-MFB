@@ -5,9 +5,6 @@
 #include "weapon.h"
 
 Ennemie test;
-static Weapon dupStep;
-static Weapon gun;
-static Weapon rifle;
 
 int main(int argc, char **argv)
 {
@@ -27,6 +24,13 @@ int main(int argc, char **argv)
     test.rangeAttack = 17;
     test.lastMove = current_time_ms();
 
+    gun.lastShoot = current_time_ms();
+    rifle.lastShoot = current_time_ms();
+    dupStep.lastShoot = current_time_ms();
+    /*dupStep.lastShoot = current_time_ms();
+    gun.lastShoot = current_time_ms();
+    rifle.lastShoot = current_time_ms();*/
+    player.equipped = gun;
 
 
     /*------------MAP--------------------*/
@@ -110,18 +114,20 @@ void iaEnnemie(Ennemie a) {
 }
 
 void afficheAmmo(){
-    char buff[11], buff1[2];
+    char buff[20] = {0}, buff1[3];
     sprintf(buff1,"%d",player.equipped.inLoader);
     strcat(buff,buff1);
     strcat(buff, " / ");
     sprintf(buff1,"%d", player.equipped.loader);
     strcat(buff, buff1);
-    strcat(buff, " ");
+    //afficheChaine(buff,largeurFenetre()*0.015 , 0.77 * largeurFenetre(), 50);
+    strcat(buff," ");
     sprintf(buff1,"%d", player.ammo);
     strcat(buff, buff1);
     couleurCourante(255,0,0);
     epaisseurDeTrait(largeurFenetre()*0.003);
-    afficheChaine(buff,largeurFenetre()*0.015 , 0.95 * largeurFenetre(), 50);
+    //printf("%s  \n", buff);
+    afficheChaine(buff,largeurFenetre()*0.015 , 0.77 * largeurFenetre(), 50);
 }
 
 void afficheHp(int debut, int longeur){
@@ -131,7 +137,7 @@ void afficheHp(int debut, int longeur){
     if (player.life <= 0){
         return;
     }
-    rectangle(debut,20, ((debut + longeur)/ 100) * player.life , 40);
+    rectangle(debut,20, (debut + longeur)/ 100 * (int)player.life , 40);
 }
 
 void loop()
@@ -287,19 +293,19 @@ void gestionEvenement(EvenementGfx evenement){
             break;
        case 'R':
        case 'r':
-           reload();
+           reload(&player);
            break;
        case '&':
        case '1':
-            player.equipped = gun;
+           changeWeapon(gun);
            break;
-       case 'é':
+       //case 'é':
        case '2':
-            player.equipped = rifle;
+           changeWeapon(rifle);
            break;
        case '"':
        case '3':
-            player.equipped = dupStep;
+           changeWeapon(dupStep);
            break;
        }
     case ClavierSpecial:

@@ -2,6 +2,7 @@
 // Created by kyli8 on 14/06/2023.
 //
 #include <string.h>
+#include <stdio.h>
 #include "struct.h"
 #include <time.h>
 #include "outils.h"
@@ -12,17 +13,18 @@ void changeWeapon(Weapon a){
     player.equipped.lastShoot = current_time_ms() + 2000;
 }
 
-void reload(){
-    if(player.equipped.inLoader == player.equipped.loader){
+void reload(Player *player){
+    /*if(player->equipped->inLoader == player->equipped->loader){
+        printf("quit");
         return;
-    }
-    if (player.equipped.inLoader + player.ammo > player.equipped.loader){
-        player.equipped.inLoader = player.equipped.loader;
+    }*/
+    if (player->equipped.inLoader + player->ammo >= player->equipped.loader){
+        player->equipped.inLoader = player->equipped.loader;
     }
     else{
-        player.equipped.inLoader += player.ammo;
+        player->equipped.inLoader += player->ammo;
     }
-    player.equipped.lastShoot = current_time_ms() + 2000;
+    player->equipped.lastShoot = current_time_ms() + 2000;
 }
 
 void fire(Ennemie *a){
@@ -34,7 +36,7 @@ void fire(Ennemie *a){
         return;
     }
     else if(player.equipped.inLoader == 0){
-        reload();
+        reload(&player);
     }
     else{
         player.equipped.lastShoot = t_time;

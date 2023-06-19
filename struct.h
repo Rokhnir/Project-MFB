@@ -17,7 +17,7 @@ typedef struct{
 }Ennemie;
 
 typedef struct {
-    char name[12];
+    char *name;
     int inLoader;
     int loader;
     int dammage;

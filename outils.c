@@ -7,6 +7,7 @@
 #include "struct.h"
 #include "outils.h"
 #include "gfxlib/include/GfxLib.h"
+#include <time.h>
 
 
 double Rdistance(double x1, double y1, double x2, double y2){
@@ -23,6 +24,7 @@ unsigned long long current_time_ms() {
     struct timespec now;
     clock_gettime(CLOCK_REALTIME, &now);
     return now.tv_sec * 1000LL + now.tv_nsec / 1000000LL;
+}
 
 /*void iaEnnemie(Ennemie a, double x, double y) {
     double dist = Rdistance(a.posx, a.posy, x, y);
