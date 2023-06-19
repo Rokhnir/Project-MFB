@@ -13,15 +13,16 @@ typedef struct{
     double speed;
     double rangeView;
     double rangeAttack;
+    unsigned long long lastMove;
 }Ennemie;
 
 typedef struct {
-    char *name;
+    char name[12];
     int inLoader;
     int loader;
     int dammage;
     int fireRate;
-    int lastShoot;
+    unsigned long long lastShoot;
 }Weapon;
 
 typedef struct{
@@ -34,5 +35,5 @@ typedef struct{
     Weapon equipped;
 }Player;
 
-
+static Player player;
 #endif //WORKSPACE_STRUCT_H

@@ -2,9 +2,12 @@
 #include "test.h"
 #include <string.h>
 #include "outils.h"
+#include "weapon.h"
 
-static Player player;
 Ennemie test;
+static Weapon dupStep;
+static Weapon gun;
+static Weapon rifle;
 
 int main(int argc, char **argv)
 {
@@ -22,6 +25,7 @@ int main(int argc, char **argv)
     test.speed = 5;
     test.rangeView = 17;
     test.rangeAttack = 17;
+    test.lastMove = current_time_ms();
 
 
 
@@ -77,6 +81,10 @@ int defenses(Ennemie a){
 }
 
 void iaEnnemie(Ennemie a) {
+    if(a.lastMove + 33 < current_time_ms()){
+        return;
+    }
+    a.lastMove = current_time_ms();
     double dist = Rdistance(a.posx, a.posy, player.posx, player.posy);
     if (dist <= a.rangeView) {
         if (dist <= a.rangeAttack) {
@@ -120,7 +128,9 @@ void afficheHp(int debut, int longeur){
     couleurCourante(128,0,0);
     rectangle(debut,20,debut + longeur,40);
     couleurCourante(0,255,0);
-    printf("%f   ", player.life);
+    if (player.life <= 0){
+        return;
+    }
     rectangle(debut,20, ((debut + longeur)/ 100) * player.life , 40);
 }
 
@@ -232,7 +242,6 @@ void gestionEvenement(EvenementGfx evenement){
         loop();
         afficheAmmo();
         afficheHp(largeurFenetre()/4,largeurFenetre()/2);
-        iaEnnemie(test);
         break;
 
     case Clavier:
@@ -276,7 +285,23 @@ void gestionEvenement(EvenementGfx evenement){
             planeX = planeX * cos(0.1) - planeY * sin(0.1);
             planeY = oldPlaneX * sin(0.1) + planeY * cos(0.1);
             break;
-        }
+       case 'R':
+       case 'r':
+           reload();
+           break;
+       case '&':
+       case '1':
+            player.equipped = gun;
+           break;
+       case 'é':
+       case '2':
+            player.equipped = rifle;
+           break;
+       case '"':
+       case '3':
+            player.equipped = dupStep;
+           break;
+       }
     case ClavierSpecial:
         break;
     case BoutonSouris:

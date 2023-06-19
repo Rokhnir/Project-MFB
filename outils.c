@@ -19,6 +19,11 @@ void gereEnnemie(Ennemie *tab, int number){
     }
 }
 
+unsigned long long current_time_ms() {
+    struct timespec now;
+    clock_gettime(CLOCK_REALTIME, &now);
+    return now.tv_sec * 1000LL + now.tv_nsec / 1000000LL;
+
 /*void iaEnnemie(Ennemie a, double x, double y) {
     double dist = Rdistance(a.posx, a.posy, x, y);
     printf("%f", dist);

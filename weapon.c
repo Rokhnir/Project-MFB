@@ -4,11 +4,12 @@
 #include <string.h>
 #include "struct.h"
 #include <time.h>
+#include "outils.h"
 
 
 void changeWeapon(Weapon a){
     player.equipped = a;
-    player.equipped.lastShoot = time(NULL) + 2;
+    player.equipped.lastShoot = current_time_ms() + 2000;
 }
 
 void reload(){
@@ -21,11 +22,11 @@ void reload(){
     else{
         player.equipped.inLoader += player.ammo;
     }
-    player.equipped.lastShoot = time(NULL) + 2;
+    player.equipped.lastShoot = current_time_ms() + 2000;
 }
 
 void fire(Ennemie *a){
-    int t_time = time(NULL);
+    int t_time = current_time_ms();
     if ( t_time < player.equipped.lastShoot + player.equipped.fireRate){
         return;
     }
