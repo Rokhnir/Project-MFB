@@ -8,6 +8,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include "gfxlib/include/WavLib.h"
+#include "gfxlib/include/BmpLib.h" // Cet include permet de manipuler des fichiers BMP
+#include "gfxlib/include/ESLib.h"	// Pour utiliser valeurAleatoire()
 
 #define screenWidth 1920
 #define screenHeight 1080
@@ -84,6 +86,12 @@ void* loopThread(void* arg) {
 
     return NULL;
 }
+
+
+//################################# Texture2D ########################################
+
+//####################################################################################
+
 int main(int argc, char **argv)
 {
     if (loopThreadStarted == false) {
@@ -227,7 +235,8 @@ void loop()
 
 void gestionEvenement(EvenementGfx evenement){
 
-    static bool pleinEcran = false;
+    static bool pleinEcran = false;		  // Pour savoir si on est en mode plein ecran ou pas
+
 
     switch (evenement)
     {
@@ -242,7 +251,9 @@ void gestionEvenement(EvenementGfx evenement){
     dvecX = abscisseSouris()-pX;
     dvecY = ordonneeSouris()-pY;
     angle = acos(pvecX*dvecX/(sqrt(pvecX*pvecX)*sqrt(dvecX*dvecX+dvecY*dvecY))) * 180 / 3.14159265;
-        break;
+
+
+    break;
 
     case Temporisation:
         rafraichisFenetre();
@@ -250,6 +261,7 @@ void gestionEvenement(EvenementGfx evenement){
 
     case Affichage:
         effaceFenetre(0, 0, 0);
+
         loop();
         break;
 
