@@ -19,61 +19,52 @@ void gestionEvenement(EvenementGfx evenement);
 static int *BVR2ARVB(int largeur, int hauteur, const unsigned char *donnees)
 {
 	const unsigned char *ptrDonnees;
-	unsigned char *pixels = (unsigned char *)malloc(largeur * hauteur * 4 * sizeof(unsigned char));
+	unsigned char *pixels = (unsigned char *)malloc(largeur * hauteur * sizeof(int));
 	unsigned char *ptrPixel;
 	int index;
 	ptrPixel = pixels;
 	ptrDonnees = donnees;
-	for (index = largeur * hauteur; index != 0; --index)
+	for (index = largeur * hauteur; index != 0; --index) /* On parcourt tous les
+														  pixels de l'image */
 	{
-		/* On parcourt tous les pixels de l'image */
-		if (ptrDonnees[0] == 0xFF && ptrDonnees[1] == 0x00 && ptrDonnees[2] == 0xFF)
-		{
-			ptrPixel[0] = ptrDonnees[0];
-			ptrPixel[1] = ptrDonnees[1];
-			ptrPixel[2] = ptrDonnees[2];
-			ptrPixel[3] = 0x00; // Opacité à 0
-		}
-		else
-		{
-			ptrPixel[0] = ptrDonnees[0];
-			ptrPixel[1] = ptrDonnees[1];
-			ptrPixel[2] = ptrDonnees[2];
-			ptrPixel[3] = 0xFF; // Opacité à 255
-		}
-		ptrDonnees += 3; /* On passe à la première composante du pixel suivant */
+		ptrPixel[0] = ptrDonnees[0];
+		ptrPixel[1] = ptrDonnees[1];
+		ptrPixel[2] = ptrDonnees[2];
+		ptrPixel[3] = 0x0FF;
+		ptrDonnees += 3; /* On passe a la premiere composante du pixel suivant */
 		ptrPixel += 4;	 /* On passe au pixel suivant */
 	}
 	return (int *)pixels;
 }
 
-void supprimerCouleur(Texture2D *texture, int couleurR, int couleurV, int couleurB)
-{
-	int *pixels = texture->donnees;
-	int largeur = texture->largeur;
-	int hauteur = texture->hauteur;
+// void supprimerCouleur(Texture2D *texture)
+// {
+// 	int *pixels = texture->donnees;
+// 	int largeur = texture->largeur;
+// 	int hauteur = texture->hauteur;
 
-	for (int i = 0; i < largeur * hauteur; i++)
-	{
-		// Extraire les composantes RGBA du pixel
-		int alpha = (pixels[i] >> 24) & 0xFF;
-		int rouge = (pixels[i] >> 16) & 0xFF;
-		int vert = (pixels[i] >> 8) & 0xFF;
-		int bleu = pixels[i] & 0xFF;
+// 	for (int i = 0; i < largeur * hauteur; i++)
+// 	{
+// 		// Extraire les composantes RGBA du pixel
+// 		int rouge = (pixels[i] >> 24) & 255;
+// 		int vert = (pixels[i] >> 16) & 255;
+// 		int bleu = (pixels[i] >> 8) & 255;
+// 		int alpha = pixels[i] & 255;
 
-		// Vérifier si le pixel correspond à la couleur à supprimer (R, V, B)
-		if (rouge == couleurR && vert == couleurV && bleu == couleurB)
-		{
-			// Mettre l'opacité à 0
-			alpha = 0;
-		}
+// 		// Vérifier si le pixel correspond à la couleur à supprimer (R, V, B)
+// 		if (rouge == 255 && vert == 0 && bleu == 255)
+// 		{
+// 			// Mettre l'opacité à 0
+// 			alpha = 0;
+// 		}
 
-		// Reconstruire le pixel modifié
-		pixels[i] = (alpha << 24) | (rouge << 16) | (vert << 8) | bleu;
-	}
-	// Mettre à jour la texture avec les nouveaux pixels
-	modifieTexture2D(texture, pixels);
-}
+// 		// Reconstruire le pixel modifié
+// 		pixels[i] = (rouge << 24) | (vert << 16) | (bleu << 8) | alpha;
+// 	}
+
+// 	// Mettre à jour la texture avec les nouveaux pixels
+// 	modifieTexture2D(texture, pixels);
+// }
 
 int main(int argc, char **argv)
 {
@@ -98,18 +89,7 @@ void gestionEvenement(EvenementGfx evenement)
 	switch (evenement)
 	{
 	case Initialisation:
-		switch (idArme)//IL FAUT INTEGRER QUELQUE PART CET ID
-		{
-		case 1:
-			image = lisBMPRGB("/image/pistol_front.bmp");
-			break;
-		case 2:
-			image = lisBMPRGB("/image/fusil_front.bmp");
-			break;
-		case 3:
-			image = lisBMPRGB("/image/dubstep_gun_front.bmp");
-			break;
-		}
+		image = lisBMPRGB("/home/allow/Downloads/gfxlib/image/npc.bmp");
 		pixels = BVR2ARVB(image->largeurImage, image->hauteurImage, image->donneesRGB);
 		texture = creeTexture2D(image->largeurImage, image->hauteurImage, pixels);
 
@@ -129,8 +109,15 @@ void gestionEvenement(EvenementGfx evenement)
 		if (image != NULL) // Si l'image a pu être lue
 		{
 			// Afficher la texture avec la fonction rectangleSelonTexture
-			rectangleSelonTexture(largeurFenetre() / 2, hauteurFenetre() / 2, texture);
+			rectangleSelonTexture((largeurFenetre() / 2) - 32, hauteurFenetre() / 8, texture);
 		}
+		else // Si l'image n'a pas pu être lue
+		{
+			// Afficher un message d'erreur
+			couleurCourante(255, 0, 0);
+			afficheChaine("Impossible de lire l'image", 20, 20, 20);
+		}
+
 		break;
 
 	case Clavier:
@@ -224,5 +211,4 @@ void gestionEvenement(EvenementGfx evenement)
 		printf("Hauteur : %d\n", hauteurFenetre());
 		break;
 	}
-
 }
