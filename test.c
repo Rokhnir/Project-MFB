@@ -5,6 +5,8 @@
 #include "weapon.h"
 
 Ennemie test;
+static int score = 0;
+static int level = 1;
 
 int main(int argc, char **argv)
 {
@@ -31,6 +33,7 @@ int main(int argc, char **argv)
     gun.lastShoot = current_time_ms();
     rifle.lastShoot = current_time_ms();*/
     player.equipped = gun;
+
 
 
     /*------------MAP--------------------*/
@@ -140,6 +143,50 @@ void afficheHp(int debut, int longeur){
     rectangle(debut,20, (debut + longeur)/ 100 * (int)player.life , 40);
 }
 
+void newHUD(){
+    char buffer[7] = {0};
+    couleurCourante(100,100,100);
+    rectangle(0,0,largeurFenetre(),hauteurFenetre()*0.07);
+    couleurCourante(0,0,128);
+
+    rectangle(2,0,largeurFenetre() / 9 - 2,hauteurFenetre()*0.07);
+
+    rectangle(largeurFenetre() / 9 + 2,0,largeurFenetre() / 3 - 2,hauteurFenetre()*0.07);
+
+    rectangle(largeurFenetre() / 3 + 2,0,4 * largeurFenetre() / 9 - 2,hauteurFenetre()*0.07);
+
+    rectangle(4 * largeurFenetre() / 9 + 2,0,5 * largeurFenetre() / 9 - 2,hauteurFenetre()*0.07);
+
+    rectangle(5 * largeurFenetre() / 9 + 2,0,6 * largeurFenetre() / 9 - 2,hauteurFenetre()*0.07);
+
+    rectangle(6 * largeurFenetre() / 9 + 2,0,7 * largeurFenetre() / 9 - 2,hauteurFenetre()*0.07);
+
+    rectangle(7 * largeurFenetre() / 9 + 2,0,largeurFenetre() - 2,hauteurFenetre()*0.07);
+
+    // ecriture :
+    couleurCourante(255,255,255);
+
+    afficheChaine("LEVEL :", 20,2 , hauteurFenetre()*0.045 );
+    sprintf(buffer, "%d", level);
+    afficheChaine(buffer, 30,largeurFenetre() / 18  , hauteurFenetre()*0.02 );
+
+    afficheChaine("SCORE :", 20,largeurFenetre() / 9 + 4 , hauteurFenetre()*0.045 );
+    sprintf(buffer, "%d", score);
+    afficheChaine(buffer, 30,largeurFenetre() / 6  , hauteurFenetre()*0.02 );
+
+    afficheChaine("HEALTH :", 20,largeurFenetre() / 3 + 4 , hauteurFenetre()*0.045 );
+    sprintf(buffer, "%d", (int)player.life);
+    afficheChaine(buffer, 30,7 * largeurFenetre() / 18  , hauteurFenetre()*0.02 );
+
+    afficheChaine("LOADER :", 20,5 * largeurFenetre() / 9 + 4 , hauteurFenetre()*0.045 );
+    sprintf(buffer, "%d", player.equipped.inLoader);
+    afficheChaine(buffer, 30,11 * largeurFenetre() / 18  , hauteurFenetre()*0.02 );
+
+    afficheChaine("AMMO :", 20,6 * largeurFenetre() / 9 + 4 , hauteurFenetre()*0.045 );
+    sprintf(buffer, "%d", player.ammo);
+    afficheChaine(buffer, 30,13 * largeurFenetre() / 18  , hauteurFenetre()*0.02 );
+}
+
 void loop()
 {
 
@@ -246,8 +293,9 @@ void gestionEvenement(EvenementGfx evenement){
     case Affichage:
         effaceFenetre(0, 0, 0);
         loop();
-        afficheAmmo();
-        afficheHp(largeurFenetre()/4,largeurFenetre()/2);
+        //afficheAmmo();
+        //afficheHp(largeurFenetre()/4,largeurFenetre()/2);
+        newHUD();
         break;
 
     case Clavier:
