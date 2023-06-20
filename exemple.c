@@ -1,9 +1,9 @@
 #include <stdlib.h> // Pour pouvoir utiliser exit()
 #include <stdio.h>	// Pour pouvoir utiliser printf()
 #include <math.h>	// Pour pouvoir utiliser sin() et cos()
-#include "GfxLib.h" // Seul cet include est necessaire pour faire du graphique
-#include "BmpLib.h" // Cet include permet de manipuler des fichiers BMP
-#include "ESLib.h"	// Pour utiliser valeurAleatoire()
+#include "gfxlib/include/GfxLib.h" // Seul cet include est necessaire pour faire du graphique
+#include "gfxlib/include/BmpLib.h" // Cet include permet de manipuler des fichiers BMP
+#include "gfxlib/include/ESLib.h"	// Pour utiliser valeurAleatoire()
 
 // Largeur et hauteur par defaut d'une image correspondant a nos criteres
 #define LargeurFenetre 800
@@ -11,6 +11,7 @@
 DonneesImageRGB *image = NULL;
 int *pixels = NULL;
 Texture2D *texture = NULL;
+int idArme = 0;
 
 /* La fonction de gestion des evenements, appelee automatiquement par le systeme
 des qu'une evenement survient */

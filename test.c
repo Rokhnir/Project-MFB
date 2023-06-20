@@ -16,7 +16,10 @@
 #define mapWidth 24
 #define mapHeight 24
 
-static char FILENAME[] = {"BCSIntro.wav"};
+static char music[] = {"BCSIntro.wav"};
+static char sond[] = {"sus.wav"};
+static char sond2[] = {"sus.wav"};
+
 static bool loopThreadStarted = false;
 static bool loopThreadStarted2 = false;
 static char cheatCode[10] = {};
@@ -47,18 +50,23 @@ void arret_brutal_music(void) {
     sprintf(command, "killall aplay");
     system(command);
 }
-void play_sound(const char *filename) {
+void play_sound(const char *sond) {
     char command[256];
-    sprintf(command, "aplay %s -d 1", filename);
+    sprintf(command, "aplay %s -d 10", sond);
+    system(command);
+}
+void play_sound2(const char *sond2) {
+    char command[256];
+    sprintf(command, "aplay %s -d 10", sond2);
     system(command);
 }
 void play_music(void *arg) {
     char command[256];
-    sprintf(command, "aplay %s " , FILENAME);
+    sprintf(command, "aplay %s " , music);
     system(command);
 }
-void *play_sound_parallel(void *filename) {
-    play_sound((const char *)filename);
+void *play_sound_parallel(void *music) {
+    play_sound((const char *)music);
 
     pthread_exit(NULL);
 }
@@ -71,7 +79,10 @@ void send_letter_to_buffer(char letter) {
     cheatCode[i + 1] = '\0';
     if (strcmp(cheatCode, "uWu") == 0) {
         printf("Cheat code sus\n");
-        play_sound_parallel("sus.wav");
+        pthread_t SondThread;
+
+        pthread_create(&SondThread,NULL,play_sound2,NULL);
+        //play_sound_parallel("sus.wav");
         cheatCode[0] = '\0';
     }
     if (i > 10) {
@@ -296,13 +307,13 @@ void gestionEvenement(EvenementGfx evenement){
                 pthread_t thread;
                 pthread_create(&thread, NULL, play_sound_parallel, (void *)filename);
                 pthread_detach(thread);
-                send_letter_to_buffer(caractereClavier());
+               // send_letter_to_buffer(caractereClavier());
 
                 break;
         case 'S':
         case 's':
             pY -= hauteurFenetre() * 0.05;
-                send_letter_to_buffer(caractereClavier());
+               // send_letter_to_buffer(caractereClavier());
 
                 break;
 
@@ -314,7 +325,7 @@ void gestionEvenement(EvenementGfx evenement){
             oldPlaneX = planeX;
             planeX = planeX * cos(-0.1) - planeY * sin(-0.1);
             planeY = oldPlaneX * sin(-0.1) + planeY * cos(-0.1);
-                send_letter_to_buffer(caractereClavier());
+               // send_letter_to_buffer(caractereClavier());
 
                 break;
         case 'D':
@@ -325,7 +336,7 @@ void gestionEvenement(EvenementGfx evenement){
             oldPlaneX = planeX;
             planeX = planeX * cos(0.1) - planeY * sin(0.1);
             planeY = oldPlaneX * sin(0.1) + planeY * cos(0.1);
-                send_letter_to_buffer(caractereClavier());
+               // send_letter_to_buffer(caractereClavier());
 
                 break;
             default:
