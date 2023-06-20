@@ -5,7 +5,7 @@ extern int** map;
 extern int mapHeight;
 extern int mapWidth;
 
-void fileReader(const int levelIndex);
+void createMap(const int levelIndex);
 void freeMapMemory(void);
 
 #endif

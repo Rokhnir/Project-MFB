@@ -14,7 +14,8 @@ void gestionEvenement(EvenementGfx evenement){
         case Initialisation:
             activeGestionDeplacementPassifSouris();
             demandeTemporisation(20);
-            createMap();
+            createMap(1);
+            //freeMapMemory();
             break;h
         case Temporisation:
             rafraichisFenetre();

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/mapHandler.h"
+#include "../include/data.h"
 
 int** map;
 int mapHeight;
@@ -54,16 +55,4 @@ void freeMapMemory(void){
 
     return;
 
-}
-
-int main(void){
-    fileReader(1);
-    for(int i = 0; i < mapHeight; i++){
-        for(int j = 0; j < mapWidth; j++){
-            printf("%d ", map[i][j]);
-        }
-        printf("\n");
-    }
-    freeMapMemory();
-    return 0;
 }
