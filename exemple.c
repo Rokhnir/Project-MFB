@@ -37,34 +37,34 @@ static int *BVR2ARVB(int largeur, int hauteur, const unsigned char *donnees)
 	return (int *)pixels;
 }
 
-// void supprimerCouleur(Texture2D *texture)
-// {
-// 	int *pixels = texture->donnees;
-// 	int largeur = texture->largeur;
-// 	int hauteur = texture->hauteur;
+void supprimerCouleur(Texture2D *texture)
+{
+	int *pixels = texture->donnees;
+	int largeur = texture->largeur;
+	int hauteur = texture->hauteur;
 
-// 	for (int i = 0; i < largeur * hauteur; i++)
-// 	{
-// 		// Extraire les composantes RGBA du pixel
-// 		int rouge = (pixels[i] >> 24) & 255;
-// 		int vert = (pixels[i] >> 16) & 255;
-// 		int bleu = (pixels[i] >> 8) & 255;
-// 		int alpha = pixels[i] & 255;
+	for (int i = 0; i < largeur * hauteur; i++)
+	{
+		// Extraire les composantes RGBA du pixel
+		int rouge = (pixels[i] >> 24) & 255;
+		int vert = (pixels[i] >> 16) & 255;
+		int bleu = (pixels[i] >> 8) & 255;
+		int alpha = pixels[i] & 255;
 
-// 		// Vérifier si le pixel correspond à la couleur à supprimer (R, V, B)
-// 		if (rouge == 255 && vert == 0 && bleu == 255)
-// 		{
-// 			// Mettre l'opacité à 0
-// 			alpha = 0;
-// 		}
+		// Vérifier si le pixel correspond à la couleur à supprimer (R, V, B)
+		if (rouge == 255 && vert == 0 && bleu == 255)
+		{
+			// Mettre l'opacité à 0
+			alpha = 0;
+		}
 
-// 		// Reconstruire le pixel modifié
-// 		pixels[i] = (rouge << 24) | (vert << 16) | (bleu << 8) | alpha;
-// 	}
+		// Reconstruire le pixel modifié
+		pixels[i] = (rouge << 24) | (vert << 16) | (bleu << 8) | alpha;
+	}
 
-// 	// Mettre à jour la texture avec les nouveaux pixels
-// 	modifieTexture2D(texture, pixels);
-// }
+	// Mettre à jour la texture avec les nouveaux pixels
+	modifieTexture2D(texture, pixels);
+}
 
 int main(int argc, char **argv)
 {
