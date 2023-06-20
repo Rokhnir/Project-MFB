@@ -8,6 +8,10 @@ Ennemie test;
 static int score = 0;
 static int level = 1;
 
+static Weapon dupStep = {"Dupstep Gun",0,6,10,900,0};
+static Weapon rifle = {"Rifle",0 ,30 ,5 ,250, 0};
+static Weapon gun = {"Gun",0 ,12 ,7 ,700, 0};
+
 int main(int argc, char **argv)
 {
     player.posx = 11;
@@ -345,15 +349,15 @@ void gestionEvenement(EvenementGfx evenement){
            break;
        case '&':
        case '1':
-           changeWeapon(gun);
+           changeWeapon(gun, &player);
            break;
        //case 'é':
        case '2':
-           changeWeapon(rifle);
+           changeWeapon(rifle,  &player);
            break;
        case '"':
        case '3':
-           changeWeapon(dupStep);
+           changeWeapon(dupStep, &player);
            break;
        }
     case ClavierSpecial:

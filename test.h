@@ -40,11 +40,5 @@ double angle;
 double oldDirX;
 double oldPlaneX;
 
-Weapon dupStep = {"Dupstep Gun",0,6,10,900,0};
-Weapon rifle = {"Rifle",0 ,30 ,5 ,250, 0};
-Weapon gun = {"Gun",0 ,12 ,7 ,700, 0};
-
-
-
 
 #endif //WORKSPACE_TEST_H

@@ -6,7 +6,7 @@
 #define WORKSPACE_WEAPON_H
 
 
-void changeWeapon(Weapon a);
+void changeWeapon(Weapon a, Player *player);
 void fire(Ennemie *a);
 void reload(Player *player);
 

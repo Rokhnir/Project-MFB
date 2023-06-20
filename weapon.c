@@ -6,11 +6,13 @@
 #include "struct.h"
 #include <time.h>
 #include "outils.h"
+#include "weapon.h"
 
 
-void changeWeapon(Weapon a){
-    player.equipped = a;
-    player.equipped.lastShoot = current_time_ms() + 2000;
+void changeWeapon(Weapon a, Player *player){
+    player->equipped = a;
+    player->equipped.lastShoot = current_time_ms() + 2000;
+    reload(player);
 }
 
 void reload(Player *player){
