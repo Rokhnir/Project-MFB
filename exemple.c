@@ -89,7 +89,7 @@ void gestionEvenement(EvenementGfx evenement)
 	switch (evenement)
 	{
 	case Initialisation:
-		image = lisBMPRGB("/home/allow/Downloads/gfxlib/image/npc.bmp");
+		image = lisBMPRGB("/image/npc.bmp");
 		pixels = BVR2ARVB(image->largeurImage, image->hauteurImage, image->donneesRGB);
 		texture = creeTexture2D(image->largeurImage, image->hauteurImage, pixels);
 
