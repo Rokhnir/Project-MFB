@@ -10,7 +10,7 @@ OBJFILES := $(patsubst %.c, $(BUILDDIR)/%.o, $(SRCFILES))
 all:output
 
 output: gfxlib/build/libisentlib.a $(OBJFILES)
-	$(GCC) $@ $^ -lm -lgut -lGl -lX11
+	$(CC) $(CFLAGS) $@ $^ -lm -lgut -lGl -lX11
 
 $(BUILDDIR):
 	mkdir $(BUILDDIR)
