@@ -9,7 +9,7 @@ int mapWidth;
 void createMap(const int levelIndex){
 
     char fileName[27] = "";
-    snprintf(fileName, sizeof(fileName), "../../assets/maps/level_%d", levelIndex);
+    snprintf(fileName, sizeof(fileName), "assets/maps/level_%d", levelIndex);
 
     FILE *file;
     file = fopen(fileName, "r");
@@ -34,11 +34,11 @@ void createMap(const int levelIndex){
             }
         }
 
+        fclose(file);
+        file = NULL;
+
     }
     else printf("[ERROR] > Could not open map file.");
-    
-    fclose(file);
-    file = NULL;
 
     return;
 

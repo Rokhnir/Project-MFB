@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include <math.h>
 #include "../include/rayCasting.h"
-#include "../include/mapHandler.h"
 #include "../../gfxlib/include/GfxLib.h"
+#include <stdio.h>
 
 extern int** map;
+extern int mapHeight;
+extern int mapWidth;
 
 int screenHeight = 300;
 int screenWidth = 800;
@@ -28,7 +30,7 @@ int fixAngle(int angle){
     return angle;
 }
 
-float dda(int rayA){ //dda(30.) devrait tirer un rayon au mid
+float dda(int rayA){
 
     int depth = 0, mapX, mapY;
     float xOffset = 0., yOffset = 0., rayTan = 0., distX = 100000.f, distY = 100000.f, rayX = 0., rayY = 0.;
@@ -129,8 +131,10 @@ void drawWall(float distance, const int widthIndex){
 }
 
 void rayCasting(void){
-    for(int i = 0; i < 60; i++){
+    printf("%d", map[1][1]);
+    return;
+    /*for(int i = 0; i < 60; i++){
         drawWall(dda(i), i);
     }
-    return;
+    return;*/
 }
