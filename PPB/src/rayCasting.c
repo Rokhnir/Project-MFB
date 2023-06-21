@@ -31,14 +31,11 @@ int fixAngle(int angle){
 
 float dda(int rayA){
 
-    
-
     int depth = 0, mapX, mapY;
     float xOffset = 0., yOffset = 0., rayTan = 0., distX = 100000.f, distY = 100000.f, rayX = 0., rayY = 0.;
 
-    printf("tet");
     //--- Vertical Check ---
-    rayTan = tan(toRads(rayA));
+    rayTan = tan(toRads(fixAngle(p.dirA + 30)));
 
     if(cos(toRads(rayA)) > 0.001){
         rayX = (((int)p.posX >> 6) << 6) + 64;
@@ -60,7 +57,6 @@ float dda(int rayA){
     while(depth < mapHeight){
         mapX = (int)rayX >> 6;
         mapY = (int)rayY >> 6;
-        printf("%d", mapX);
         if(map[mapX][mapY] > 0){
             depth = mapHeight;
             distX = cos(toRads(rayA)) * (rayX - p.posX) - sin(toRads(rayA)) * (rayY - p.posY);
