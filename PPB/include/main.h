@@ -8,9 +8,9 @@ typedef struct{
 typedef struct{
     float posX;
     float posY;
+    float dirA;
     float dirX;
     float dirY;
-    float dirA;
 }Player;
 
 void keyDown(unsigned char key);

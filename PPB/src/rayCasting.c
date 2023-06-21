@@ -10,8 +10,7 @@ extern int mapHeight;
 extern int mapWidth;
 extern int screenHeight;
 extern int screenWidth;
-
-Player p = { .posX = 150, .posY = 400, .dirX = 0, .dirY = -1, .dirA = 90};
+extern Player p;
 
 float toRads(float angle){
     return angle * M_PI / 180.;
@@ -63,32 +62,32 @@ float dda(const char axe, const float rayA, const float tanRayA){
     int depth = 0;
 
     if(axe == 'H' && sin(toRads(rayA)) > 0.001) {
-        rayY = (((int)p.posY >> 6) << 6) - 0.0001;
-        rayX = (p.posY - rayY) * tanRayA + p.posX;
+        rayY = (((int)p.posX >> 6) << 6) - 0.0001;
+        rayX = (p.posX - rayY) * tanRayA + p.posY;
         yOffset = -64;
         xOffset = -yOffset * tanRayA;
     }
     else if(axe == 'V' && cos(toRads(rayA)) > 0.001) {
-        rayX = (((int)p.posY >> 6) << 6) + 64;
-        rayY = (p.posX - rayX) * tanRayA + p.posY;
+        rayX = (((int)p.posX >> 6) << 6) + 64;
+        rayY = (p.posY - rayX) * tanRayA + p.posX;
         xOffset = 64;
         yOffset = -xOffset * tanRayA;
     }
     else if(axe == 'H' && sin(toRads(rayA)) < 0.001){
-        rayY = (((int)p.posY >> 6) << 6) + 64;
-        rayX = (p.posY - rayY) * tanRayA + p.posX;
+        rayY = (((int)p.posX >> 6) << 6) + 64;
+        rayX = (p.posX - rayY) * tanRayA + p.posY;
         yOffset = 64;
         xOffset = -yOffset * tanRayA;
     }
     else if(axe == 'V' && cos(toRads(rayA)) < 0.001){
-        rayX = (((int)p.posY >> 6) << 6) - 0.0001;
-        rayY = (p.posX - rayX) * tanRayA + p.posY;
+        rayX = (((int)p.posX >> 6) << 6) - 0.0001;
+        rayY = (p.posY - rayX) * tanRayA + p.posX;
         xOffset = -64;
         yOffset = -xOffset * tanRayA;
     }
     else {
-        rayX = p.posX;
-        rayY = p.posY;
+        rayX = p.posY;
+        rayY = p.posX;
         depth = 8;
     }
     
@@ -97,7 +96,7 @@ float dda(const char axe, const float rayA, const float tanRayA){
         int mapY = (int){rayX} >> 6;
         if(0 < mapX && mapX < mapHeight && 0 < mapY && mapY < mapWidth && map[mapX][mapY] > 0){
             depth = 8;
-            returnValue = cos(toRads(rayA)) * (rayX - p.posX) - sin(toRads(rayA)) * (rayY - p.posY);
+            returnValue = cos(toRads(rayA)) * (rayX - p.posY) - sin(toRads(rayA)) * (rayY - p.posX);
         }
         else{
             rayX += xOffset;

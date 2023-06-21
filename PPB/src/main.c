@@ -4,16 +4,23 @@
 #include "../../gfxlib/include/GfxLib.h"
 #include "../include/main.h"
 #include <GL/glut.h>
+#include <math.h>
 
 int screenHeight = 640;
 int screenWidth = 960;
 static KeysStruct Keys = {0,0,0,0};
-extern Player p;
+Player p;
 static float oldFrame = 0., newFrame = 0., fps = 0.;
 
 int main(int argc, char **argv){
 
     createMap(0);
+    p.posX = 400;
+    p.posY = 150;
+    p.dirA = 90;
+    p.dirX = -sin(toRads(p.dirA));
+    p.dirY = cos(toRads(p.dirA));
+
     initialiseGfx(argc, argv);
     prepareFenetreGraphique("Project-MBS", screenWidth, screenHeight);
     glutKeyboardUpFunc(keyUp);
@@ -43,10 +50,31 @@ void gestionEvenement(EvenementGfx evenement){
             if(Keys.q){
                 p.dirA += 0.2 * fps;
                 p.dirA = fixAngle(p.dirA);
+                p.dirX = -sin(toRads(p.dirA));
+                p.dirY = cos(toRads(p.dirA));
             }
             else if(Keys.d){
                 p.dirA -= 0.2 * fps;
                 p.dirA = fixAngle(p.dirA);
+                p.dirX = -sin(toRads(p.dirA));
+                p.dirY = cos(toRads(p.dirA));
+            }
+            int xOffset;
+            if(p.dirX < 0) xOffset = -20;
+            else xOffset = 20;
+            int yOffset;
+            if(p.dirY < 0) yOffset = -20;
+            else yOffset = 20;
+
+
+
+            if(Keys.z){
+                p.posX += p.dirX * 0.2 * fps;
+                p.posY += p.dirY * 0.2 * fps;
+            }
+            else if(Keys.s){
+                p.posX -= p.dirX * 0.2 * fps;
+                p.posY -= p.dirY * 0.2 * fps;
             }
 
             rayCasting();
