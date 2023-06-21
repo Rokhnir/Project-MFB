@@ -14,9 +14,7 @@ void createMap(const int levelIndex){
     FILE *file;
     file = fopen(fileName, "r");
 
-    if(file == NULL) printf("[ERROR] > Could not open map file.");
-
-    else {
+    if(file != NULL){
 
         char line[100];
 
@@ -37,6 +35,7 @@ void createMap(const int levelIndex){
         }
 
     }
+    else printf("[ERROR] > Could not open map file.");
     
     fclose(file);
     file = NULL;

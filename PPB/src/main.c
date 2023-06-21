@@ -3,13 +3,13 @@
 #include "../include/mapHandler.h"
 #include "../../gfxlib/include/GfxLib.h"
 
-int screenHeight = 300;
-int screenWidth = 800;
+int screenHeightt = 300;
+int screenWidtht = 800;
 
 int main(int argc, char **argv){
 
     initialiseGfx(argc, argv);
-    prepareFenetreGraphique("Project-MBS", screenWidth, screenHeight);
+    prepareFenetreGraphique("Project-MBS", screenWidtht, screenHeightt);
     lanceBoucleEvenements();
     return 0;
 
@@ -36,8 +36,8 @@ void gestionEvenement(EvenementGfx evenement){
         case Souris: break;
         case Inactivite: break;
         case Redimensionnement:
-            screenWidth = largeurFenetre();
-            screenHeight = hauteurFenetre();
+            screenWidtht = largeurFenetre();
+            screenHeightt = hauteurFenetre();
             break;
     }
 }
