@@ -3,6 +3,7 @@
 #include <math.h>
 #include "../include/rayCasting.h"
 #include "../../gfxlib/include/GfxLib.h"
+#include "../include/main.h"
 
 extern int** map;
 extern int mapHeight;
@@ -10,13 +11,6 @@ extern int mapWidth;
 extern int screenHeight;
 extern int screenWidth;
 
-typedef struct{
-    float posX;
-    float posY;
-    float dirX;
-    float dirY;
-    float dirA;
-}Player;
 Player p = { .posX = 150, .posY = 400, .dirX = 0, .dirY = -1, .dirA = 90};
 
 float toRads(float angle){

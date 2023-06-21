@@ -74,7 +74,7 @@
 //	#include <OpenGL/CGLMacro.h>
 	#include <GLUT/glut.h>		// Header File For The GLut Library
 #else
-	#include <glut.h>			// Header File For The GLut Library
+	#include <GL/glut.h>			// Header File For The GLut Library
 	#ifdef _WIN32
 		#include <GL/glext.h>
 	#else

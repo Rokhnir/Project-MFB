@@ -19,9 +19,6 @@ output: $(OBJFILES)
 	$(CC) $(CFLAGS) $@ $^ gfxlib/build/libisentlib.a -lm -lglut -lGL -lX11
 
 $(BUILDDIR)/%.o: $(SRC)/%.c
-	$(CC) $(CFLAGS) $@ -c $<
-
-$(BUILDDIR)/mapHandler.o: $(SRC)/mapHandler.c $(INCLUDE)/mapHandler.h
 	$(CC) $(CFLAGS) $@ -c $< -Wno-unused-result
 
 clean:

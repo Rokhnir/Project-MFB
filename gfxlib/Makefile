@@ -17,12 +17,6 @@ $(BUILDDIR)/libisentlib.a: $(OBJFILES)
 	ranlib $@
 
 $(BUILDDIR)/%.o: $(SRC)/%.c
-	$(CC) $(CFLAGS) $@ -c $<
-
-$(BUILDDIR)/GfxLib.o: $(SRC)/GfxLib.c $(INCLUDE)/GfxLib.h $(INCLUDE)/ESLib.h
-	$(CC) $(CFLAGS) $@ -c $< -I/usr/include/GL
-
-$(BUILDDIR)/WavLib.o: $(SRC)/WavLib.c $(INCLUDE)/WavLib.h $(INCLUDE)/OutilsLib.h
 	$(CC) $(CFLAGS) $@ -c $< -Wno-unused-result
 
 clean:

@@ -1,9 +1,19 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-extern int screenHeight;
-extern int screenWidth;
+typedef struct{
+    int z,q,s,d;
+}KeysStruct;
 
-void gestionEvenement(EvenementGfx evenement)
+typedef struct{
+    float posX;
+    float posY;
+    float dirX;
+    float dirY;
+    float dirA;
+}Player;
+
+void keyDown(unsigned char key);
+void keyUp(unsigned char key, int x, int y);
 
 #endif
