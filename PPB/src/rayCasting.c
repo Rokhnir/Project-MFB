@@ -1,9 +1,13 @@
 #include <stdlib.h>
 #include <math.h>
 #include "../include/rayCasting.h"
-#include "../include/main.h"
 #include "../include/mapHandler.h"
 #include "../../gfxlib/include/GfxLib.h"
+
+extern int** map;
+
+int screenHeight = 300;
+int screenWidth = 800;
 
 typedef struct Player{
     float posX;
@@ -27,7 +31,7 @@ int fixAngle(int angle){
 float dda(int rayA){ //dda(30.) devrait tirer un rayon au mid
 
     int depth = 0, mapX, mapY;
-    float xOffset, yOffset, rayTan, distX = 100000.f, distY = 100000.f, rayX, rayY;
+    float xOffset = 0., yOffset = 0., rayTan = 0., distX = 100000.f, distY = 100000.f, rayX = 0., rayY = 0.;
 
     //--- Vertical Check ---
     rayTan = tan(toRads(rayA));
@@ -52,7 +56,7 @@ float dda(int rayA){ //dda(30.) devrait tirer un rayon au mid
     while(depth < mapHeight){
         mapX = (int)rayX >> 6;
         mapY = (int)rayY >> 6;
-        if(map[mapX][mapY]){
+        if(map[mapX][mapY] > 0){
             depth = mapHeight;
             distX = cos(toRads(rayA)) * (rayX - p.posX) - sin(toRads(rayA)) * (rayY - p.posY);
         }
@@ -87,9 +91,9 @@ float dda(int rayA){ //dda(30.) devrait tirer un rayon au mid
     while(depth < mapWidth){
         mapX = (int)rayX >> 6;
         mapY = (int)rayY >> 6;
-        if(map[mapX][mapY] != 0){
+        if(map[mapX][mapY] > 0){
             depth = mapHeight;
-            distY = cos(toRads(rayA)) * (rayX - p.posX) - sin(toRads(rayA)) * (rayY - posY);
+            distY = cos(toRads(rayA)) * (rayX - p.posX) - sin(toRads(rayA)) * (rayY - p.posY);
         }
         else {
             rayX += xOffset;
