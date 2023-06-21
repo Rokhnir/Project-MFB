@@ -1,10 +1,10 @@
 CC := gcc
 CFLAGS := -Wall -O2 -o
 
-BUILDDIR := ./PPB/build
-INCLUDE := ./PPB/include
-SRC := ./PPB/src
-SRCFILES := main.c mapHandler.c rayCasting.c
+BUILDDIR := ./Project-MFB/build
+INCLUDE := ./Project-MFB/include
+SRC := ./Project-MFB/src
+SRCFILES := main.c mapHandler.c playerHandler.c rayCasting.c
 OBJFILES := $(patsubst %.c, $(BUILDDIR)/%.o, $(SRCFILES))
 
 all: $(BUILDDIR) libisentlib.a output

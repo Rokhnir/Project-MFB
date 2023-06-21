@@ -4,13 +4,13 @@
 #include "../include/rayCasting.h"
 #include "../../gfxlib/include/GfxLib.h"
 #include "../include/main.h"
+#include "../include/playerHandler.h"
 #include <unistd.h>
 extern int** map;
 extern int mapWidth;
 extern int mapHeight;
 extern int screenHeight;
 extern int screenWidth;
-extern Player p;
 
 float toRads(float angle){
     return angle * M_PI / 180.;

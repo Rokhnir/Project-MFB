@@ -1,11 +1,23 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "../include/mapHandler.h"
-#include "../../gfxlib/include/GfxLib.h"
+/* ----------------------------------------------------------- */
+// INCLUDES
+//
+#include "../include/mapHandler.h" // self
+#include <stdio.h> // snprintf | fopen | fgets | fscanf | fclose
+#include <stdlib.h> // atoi | malloc | free
+#include "../include/playerHandler.h" // initPlayer
+#include "../../gfxlib/include/GfxLib.h" // messageDErreur
 
-int** map;
-int mapHeight;
-int mapWidth;
+/* ----------------------------------------------------------- */
+// GLOBAL VARS
+//
+int** map; // Tableay 2D conenant le layout de la map
+int mapHeight; // Hauteur du tableau map
+int mapWidth; // Largeur du tableau map
+
+
+/* ----------------------------------------------------------- */
+// FUNCTIONS
+//
 
 void createMap(const int levelIndex){
 
@@ -31,7 +43,14 @@ void createMap(const int levelIndex){
 
         for(int i = 0; i < mapHeight; i++){
             for(int j = 0; j < mapWidth; j++){
+                
                 fscanf(file, "%d", &map[i][j]);
+
+                if(map[i][j] < 0){
+                    initPlayer(j, i, map[i][j] * -1);
+                    map[i][j] = 0;
+                }
+
             }
         }
 

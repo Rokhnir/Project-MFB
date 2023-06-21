@@ -1,33 +1,38 @@
-#include <stdlib.h>
-#include "../include/rayCasting.h"
-#include "../include/mapHandler.h"
-#include "../../gfxlib/include/GfxLib.h"
-#include "../include/main.h"
-#include <GL/glut.h>
-#include <math.h>
+/* ----------------------------------------------------------- */
+// INCLUDES
+//
+#include "../include/main.h" // self
+#include "../include/mapHandler.h" // createMap
+#include "../../gfxlib/include/GfxLib.h" // *el famoso*
+#include <GL/glut.h> // glutKeyboardUpFunc | glutget | GLUT_ELAPSED_TIME
+#include "../include/playerHandler.h" // movePlayer
+#include "../include/rayCasting.h" // rayCasting
 
-int screenHeight = 640;
-int screenWidth = 960;
-extern int** map;
-extern int mapWidth;
-extern int mapHeight;
-static KeysStruct Keys = {0,0,0,0};
-Player p;
-static float oldFrame = 0., newFrame = 0., fps = 0.;
+/* ----------------------------------------------------------- */
+// GLOBAL VARS
+//
+int screenHeight = 640; // Hauteur de la fenêtre
+int screenWidth = 960; // Largeur de la fenêtre
+float fps = 0.; // Permet de garder une vitesse de déplacement constante
+//
+static KeysStruct Keys = {0,0,0,0}; // Structure conservant l'état des touches
+static float oldFrame = 0., newFrame = 0.; // Permet le calcul des fps
 
+/* ----------------------------------------------------------- */
+// FUNCTIONS
+//
 int main(int argc, char **argv){
 
     createMap(0);
-    p.posX = 150;
-    p.posY = 400;
-    p.dirA = 180;
-    p.dirX = cos(toRads(p.dirA));
-    p.dirY = -sin(toRads(p.dirA));
 
     initialiseGfx(argc, argv);
+    
     prepareFenetreGraphique("Project-MBS", screenWidth, screenHeight);
+    
     glutKeyboardUpFunc(keyUp);
+
     lanceBoucleEvenements();
+    
     return 0;
 
 }
@@ -35,9 +40,7 @@ int main(int argc, char **argv){
 void gestionEvenement(EvenementGfx evenement){
     switch(evenement){
         case Initialisation:
-            //activeGestionDeplacementPassifSouris();
             demandeTemporisation(20);
-            //freeMapMemory();
             break;
         case Temporisation:
             rafraichisFenetre();
@@ -50,33 +53,13 @@ void gestionEvenement(EvenementGfx evenement){
 
             effaceFenetre(0, 0, 0);
 
-            if(Keys.q){
-                p.dirA += 0.2 * fps;
-                p.dirA = fixAngle(p.dirA);
-                p.dirX = cos(toRads(p.dirA));
-                p.dirY = -sin(toRads(p.dirA));
-            }
-            else if(Keys.d){
-                p.dirA -= 0.2 * fps;
-                p.dirA = fixAngle(p.dirA);
-                p.dirX = cos(toRads(p.dirA));
-                p.dirY = -sin(toRads(p.dirA));
-            }
-
-            if(Keys.z){
-                float newPosX = p.posX + p.dirX * 0.2 * fps;
-                float newPosY = p.posY + p.dirY * 0.2 * fps;
-                if(!map[(int){newPosX} >> 6][(int){p.posY} >> 6]) p.posX = newPosX;
-                if(!map[(int){p.posX} >> 6][(int){newPosY} >> 6]) p.posY = newPosY;
-            }
-            else if(Keys.s){
-                float newPosX = p.posX - p.dirX * 0.2 * fps;
-                float newPosY = p.posY - p.dirY * 0.2 * fps;
-                if(!map[(int){newPosX} / 64][(int){p.posY} / 64]) p.posX = newPosX;
-                if(!map[(int){p.posX} / 64][(int){newPosY} / 64]) p.posY = newPosY;
-            }
+            if(Keys.z) movePlayer('z');
+            if(Keys.q) movePlayer('q');
+            if(Keys.s) movePlayer('s');
+            if(Keys.d) movePlayer('d');
 
             rayCasting();
+
             break;
         case Clavier: 
             keyDown(caractereClavier());
@@ -131,6 +114,11 @@ void keyDown(unsigned char key){
         case 'D':
         case 'd':
             Keys.d = 1;
+            break;
+        case 'X':
+        case 'x':
+            termineBoucleEvenements();
+            freeMapMemory();
             break;
     }
     return;
