@@ -1,5 +1,5 @@
 test:test.c libisentlib.a
-	gcc -Wall -o output test.c temp/libisentlib.a -lm -lglut -lGL -lX11 -pthread 
+	gcc -Wall -o output test.c  outils.c weapon.c temp/libisentlib.a -lm -lglut -lGL -lX11 -pthread
 
 #############################################################################################################################################################################
 
@@ -33,6 +33,10 @@ WavLib.o: gfxlib/src/WavLib.c gfxlib/include/WavLib.h gfxlib/include/OutilsLib.h
 
 VectorLib.o: gfxlib/src/VectorLib.c gfxlib/include/VectorLib.h
 	gcc -Wall -O2 -o temp/VectorLib.o -c gfxlib/src/VectorLib.c -msse3
+outils.o : outils.c
+	gcc -Wall -c outils.c
 
+weapon.o : weapon.c
+	gcc -Wall -c weapon.c
 clean:
 	rm -f temp/*.?
