@@ -304,6 +304,33 @@ void newHUD() {
     afficheChaine("AMMO :", 20, 6 * largeurFenetre() / 9 + 4, hauteurFenetre() * 0.045);
     sprintf(buffer, "%d", player.ammo);
     afficheChaine(buffer, 30, 13 * largeurFenetre() / 18, hauteurFenetre() * 0.02);
+
+    if (strcmp(player.equipped.name, "Gun") == 0) {
+
+        image = lisBMPRGB("image/pistol_overlay.bmp");
+        pixels = BVR2ARVB1(image->largeurImage, image->hauteurImage, image->donneesRGB);
+        texture = creeTexture2D(image->largeurImage, image->hauteurImage, pixels);
+        rectangleSelonTexture( 8 * largeurFenetre() / 9, 0, texture);
+
+    }
+    if (strcmp(player.equipped.name, "Dupstep Gun") == 0) {
+
+
+        image = lisBMPRGB("image/dubstep_gun_overlay.bmp");
+        pixels = BVR2ARVB1(image->largeurImage, image->hauteurImage, image->donneesRGB);
+        texture = creeTexture2D(image->largeurImage, image->hauteurImage, pixels);
+        rectangleSelonTexture( 8 * largeurFenetre() / 9 , 0, texture);
+
+    }
+
+    if (strcmp(player.equipped.name, "Rifle") == 0) {
+        image = lisBMPRGB("image/fusil_overlay.bmp");
+        pixels = BVR2ARVB1(image->largeurImage, image->hauteurImage, image->donneesRGB);
+        texture = creeTexture2D(image->largeurImage, image->hauteurImage, pixels);
+        rectangleSelonTexture( 8 * largeurFenetre() / 9, 0, texture);
+
+
+    }
 }
 
 int main(int argc, char **argv) {
