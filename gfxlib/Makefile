@@ -1,41 +1,28 @@
-CC = gcc
-CFLAGS = -Wall -O2 -c
+CC := gcc
+CFLAGS := -Wall -O2 -o
 
-vpath %.c ./src
-vpath %.h ./include
-vpath %.o ../temp
-vpath %.a ../temp
+BUILDDIR := build
+INCLUDE := ./include
+SRC := ./src
+SRCFILES := BmpLib.c ErreurLib.c ESLib.c GfxLib.c OutilsLib.c SocketLib.c ThreadLib.c VectorLib.c WavLib.c
+OBJFILES := $(patsubst %.c, $(BUILDDIR)/%.o, $(SRCFILES))
 
-libisentlib.a: BmpLib.o ErreurLib.o ESLib.o GfxLib.o OutilsLib.o SocketLib.o ThreadLib.o VectorLib.o WavLib.o
-	ar r libisentlib.a BmpLib.o ErreurLib.o ESLib.o GfxLib.o OutilsLib.o SocketLib.o ThreadLib.o VectorLib.o WavLib.o
-	ranlib libisentlib.a
+$(BUILDDIR)/libisentlib.a: $(OBJFILES)
+	ar rcs $@ $^
+	ranlib $@
 
-BmpLib.o: BmpLib.c BmpLib.h OutilsLib.h
-	${CC} ${CFLAGS} $<
+$(BUILDDIR):
+	mkdir $(BUILDDIR)
 
-ESLib.o: ESLib.c ESLib.h ErreurLib.h
-	${CC} ${CFLAGS} $<
+$(BUILDDIR)/%.o: $(SRC)/%.c $(BUILDDIR)
+	$(CC) $(CFLAGS) $@ -c $<
 
-ErreurLib.o: ErreurLib.c ErreurLib.h
-	${CC} ${CFLAGS} $<
+$(BUILDDIR)/GfxLib.o: $(SRC)/GfxLib.c $(INCLUDE)/GfxLib.h $(INCLUDE)/ESLib.h
+	$(CC) $(CFLAGS) $@ -c $< -I/usr/include/GL
 
-GfxLib.o: GfxLib.c GfxLib.h ESLib.h
-	${CC} ${CFLAGS} $< -I/usr/include/GL
-
-OutilsLib.o: OutilsLib.c OutilsLib.h
-	${CC} ${CFLAGS} $<
-
-SocketLib.o: SocketLib.c SocketLib.h
-	${CC} ${CFLAGS} $<
-
-ThreadLib.o: ThreadLib.c ThreadLib.h
-	${CC} ${CFLAGS} $<
-
-WavLib.o: WavLib.c WavLib.h OutilsLib.h
-	${CC} ${CFLAGS} $< -Wno-unused-result
+$(BUILDDIR)/WavLib.o: $(SRC)/WavLib.c $(INCLUDE)/WavLib.h $(INCLUDE)/OutilsLib.h
+	$(CC) $(CFLAGS) $@ -c $< -Wno-unused-result
 
 clean:
-	rm -f *~ *.o
-
-deepclean: clean
-	rm -f libisentlib.a
+	rm -f $(BUILDDIR)/*.o $(BUILDDIR)/libisentlib.a
+	rm -r $(BUILDDIR)

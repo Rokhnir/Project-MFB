@@ -1,4 +1,10 @@
 #include <stdlib.h>
+#include "../include/rayCasting.h"
+#include "../include/mapHandler.h"
+#include "../../gfxlib/include/GfxLib.h"
+
+int screenHeight = 300;
+int screenWidth = 800;
 
 int main(int argc, char **argv){
 
@@ -16,13 +22,13 @@ void gestionEvenement(EvenementGfx evenement){
             demandeTemporisation(20);
             createMap(1);
             //freeMapMemory();
-            break;h
+            break;
         case Temporisation:
             rafraichisFenetre();
             break;
         case Affichage:
             effaceFenetre(0, 0, 0);
-            raycaster();
+            rayCasting();
             break;
         case Clavier: break;
         case ClavierSpecial: break;

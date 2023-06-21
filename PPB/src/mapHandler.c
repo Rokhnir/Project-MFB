@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/mapHandler.h"
-#include "../include/data.h"
 
 int** map;
 int mapHeight;
