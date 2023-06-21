@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "../include/rayCasting.h"
 #include "../include/mapHandler.h"
 #include "../../gfxlib/include/GfxLib.h"
@@ -15,6 +16,7 @@ extern int mapHeight;
 static KeysStruct Keys = {0,0,0,0};
 Player p;
 static float oldFrame = 0., newFrame = 0., fps = 0.;
+extern int** map;
 
 int main(int argc, char **argv){
 
@@ -65,12 +67,16 @@ void gestionEvenement(EvenementGfx evenement){
             }
 
             if(Keys.z){
-                p.posX += p.dirX * 0.2 * fps;
-                p.posY += p.dirY * 0.2 * fps;
+                if(map[(int)((p.posX + p.dirX * 0.2 * fps) / 64)][(int)((p.posY + p.dirY * 0.2 * fps) / 64)] == 0){
+                    p.posX += p.dirX * 0.2 * fps;
+                    p.posY += p.dirY * 0.2 * fps;
+                }
             }
             else if(Keys.s){
-                p.posX -= p.dirX * 0.2 * fps;
-                p.posY -= p.dirY * 0.2 * fps;
+                if(map[(int)((p.posX - p.dirX * 0.2 * fps) / 64)][(int)((p.posY - p.dirY * 0.2 * fps) / 64)] == 0){
+                    p.posX -= p.dirX * 0.2 * fps;
+                    p.posY -= p.dirY * 0.2 * fps;
+                }
             }
 
             rayCasting();
