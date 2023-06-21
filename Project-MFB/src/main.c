@@ -23,7 +23,7 @@ static float oldFrame = 0., newFrame = 0.; // Permet le calcul des fps
 //
 int main(int argc, char **argv){
 
-    createMap(0);
+    createMap(1);
 
     initialiseGfx(argc, argv);
     

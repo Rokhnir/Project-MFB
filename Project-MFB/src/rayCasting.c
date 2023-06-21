@@ -1,16 +1,17 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include "../include/rayCasting.h"
-#include "../../gfxlib/include/GfxLib.h"
-#include "../include/main.h"
-#include "../include/playerHandler.h"
-#include <unistd.h>
-extern int** map;
-extern int mapWidth;
-extern int mapHeight;
-extern int screenHeight;
-extern int screenWidth;
+/* ----------------------------------------------------------- */
+// INCLUDES
+//
+#include "../include/rayCasting.h" // self
+#include <math.h> // M_PI | tan | sin | cos
+#include "../include/playerHandler.h" // p.dirA | p.posX | p.posY
+#include "../../gfxlib/include/GfxLib.h" // couleurCourante | ligne
+#include "../include/main.h" // screenHeight | screenWidth
+#include "../include/mapHandler.h" // mapWidth | mapHeight | map
+
+
+/* ----------------------------------------------------------- */
+// FUNCTIONS
+//
 
 float toRads(float angle){
     return angle * M_PI / 180.;
@@ -57,7 +58,7 @@ void rayCasting(void){
 float dda(const char axe, const float rayA, const float tanRayA){
 
     float returnValue = 100000., rayX = 0., rayY = 0., xOffset = 0., yOffset = 0.;
-    int depth = 0;
+    int depth = 0, maxDepth = (axe == 'H') ? mapHeight : mapWidth;
 
     if(axe == 'H' && sin(toRads(rayA)) > 0.001) { // HAUT
         rayY = (((int)p.posY >> 6) << 6) - 0.0001;
@@ -86,16 +87,16 @@ float dda(const char axe, const float rayA, const float tanRayA){
     else {
         rayX = p.posY;
         rayY = p.posX;
-        depth = 8;
+        depth = maxDepth;
     }
 
-    while(depth < 8){
+    while(depth < maxDepth){
         
         int mapX = (int){rayY} >> 6;
         int mapY = (int){rayX} >> 6;
 
         if(0 <= mapX && mapX < mapWidth && 0 <= mapY && mapY < mapHeight && map[mapX][mapY] > 0){
-            depth = 8;
+            depth = maxDepth;
             returnValue = cos(toRads(rayA)) * (rayX - p.posX) - sin(toRads(rayA)) * (rayY - p.posY);
         }
         else{
