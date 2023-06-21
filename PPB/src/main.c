@@ -64,16 +64,16 @@ void gestionEvenement(EvenementGfx evenement){
             }
 
             if(Keys.z){
-                if(map[(int)((p.posX + p.dirX * 0.2 * fps) / 64)][(int)((p.posY + p.dirY * 0.2 * fps) / 64)] == 0){
-                    p.posX += p.dirX * 0.2 * fps;
-                    p.posY += p.dirY * 0.2 * fps;
-                }
+                float newPosX = p.posX + p.dirX * 0.2 * fps;
+                float newPosY = p.posY + p.dirY * 0.2 * fps;
+                if(!map[(int){newPosX} >> 6][(int){p.posY} >> 6]) p.posX = newPosX;
+                if(!map[(int){p.posX} >> 6][(int){newPosY} >> 6]) p.posY = newPosY;
             }
             else if(Keys.s){
-                if(map[(int)((p.posX - p.dirX * 0.2 * fps) / 64)][(int)((p.posY - p.dirY * 0.2 * fps) / 64)] == 0){
-                    p.posX -= p.dirX * 0.2 * fps;
-                    p.posY -= p.dirY * 0.2 * fps;
-                }
+                float newPosX = p.posX - p.dirX * 0.2 * fps;
+                float newPosY = p.posY - p.dirY * 0.2 * fps;
+                if(!map[(int){newPosX} / 64][(int){p.posY} / 64]) p.posX = newPosX;
+                if(!map[(int){p.posX} / 64][(int){newPosY} / 64]) p.posY = newPosY;
             }
 
             rayCasting();
