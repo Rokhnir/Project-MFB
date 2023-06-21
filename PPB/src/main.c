@@ -1,12 +1,10 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "../include/rayCasting.h"
 #include "../include/mapHandler.h"
 #include "../../gfxlib/include/GfxLib.h"
 #include "../include/main.h"
 #include <GL/glut.h>
 #include <math.h>
-#include <stdio.h>
 
 int screenHeight = 640;
 int screenWidth = 960;
@@ -16,7 +14,6 @@ extern int mapHeight;
 static KeysStruct Keys = {0,0,0,0};
 Player p;
 static float oldFrame = 0., newFrame = 0., fps = 0.;
-extern int** map;
 
 int main(int argc, char **argv){
 
