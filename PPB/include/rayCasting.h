@@ -1,11 +1,9 @@
 #ifndef DATA_H
 #define DATA_H
 
-float toRads(int angle);
-int fixAngle(int angle);
-float dda(int rayA);
+float toRads(float angle);
+float fixAngle(float angle);
+float dda(const char axe, const float rayA, const float tanRayA);
 void rayCasting(void);
-void drawWall(float distance, const int widthIndex);
-
 
 #endif

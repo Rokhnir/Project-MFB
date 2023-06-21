@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/mapHandler.h"
+#include "../../gfxlib/include/GfxLib.h"
 
 int** map;
 int mapHeight;
@@ -38,7 +39,7 @@ void createMap(const int levelIndex){
         file = NULL;
 
     }
-    else printf("[ERROR] > Could not open map file.");
+    else messageDErreur("[mapHandler] > Could not open map file.");
 
     return;
 

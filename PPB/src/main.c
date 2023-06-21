@@ -3,12 +3,12 @@
 #include "../include/mapHandler.h"
 #include "../../gfxlib/include/GfxLib.h"
 
-int screenHeight = 480;
-int screenWidth = 640;
+int screenHeight = 640;
+int screenWidth = 960;
 
 int main(int argc, char **argv){
 
-    createMap(1);
+    createMap(0);
     initialiseGfx(argc, argv);
     prepareFenetreGraphique("Project-MBS", screenWidth, screenHeight);
     lanceBoucleEvenements();

@@ -9,14 +9,14 @@ OBJFILES := $(patsubst %.c, $(BUILDDIR)/%.o, $(SRCFILES))
 
 all: $(BUILDDIR) libisentlib.a output
 
-output: $(OBJFILES)
-	$(CC) $(CFLAGS) $@ $^ gfxlib/build/libisentlib.a -lm -lglut -lGL -lX11
-
 $(BUILDDIR):
 	mkdir $(BUILDDIR)
 
 libisentlib.a:
 	make -C gfxlib/
+
+output: $(OBJFILES)
+	$(CC) $(CFLAGS) $@ $^ gfxlib/build/libisentlib.a -lm -lglut -lGL -lX11
 
 $(BUILDDIR)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) $@ -c $<

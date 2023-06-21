@@ -9,12 +9,12 @@ OBJFILES := $(patsubst %.c, $(BUILDDIR)/%.o, $(SRCFILES))
 
 all: $(BUILDDIR) $(BUILDDIR)/libisentlib.a
 
+$(BUILDDIR):
+	mkdir $(BUILDDIR)
+
 $(BUILDDIR)/libisentlib.a: $(OBJFILES)
 	ar rcs $@ $^
 	ranlib $@
-
-$(BUILDDIR):
-	mkdir $(BUILDDIR)
 
 $(BUILDDIR)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) $@ -c $<
