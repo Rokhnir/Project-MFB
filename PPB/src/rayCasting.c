@@ -35,6 +35,7 @@ void rayCasting(void){
         couleurCourante(255,0,0);
         if(distV < distH){
             couleurCourante(155,0,0);
+            distH = distV;
         }
 
         int lineHeight = (64 * screenHeight) / (distH * cos(toRads(fixAngle(p.dirA - rayA))));
@@ -58,7 +59,7 @@ void rayCasting(void){
 
 float dda(const char axe, const float rayA, const float tanRayA){
 
-    float returnValue = 100000, rayX = 0., rayY = 0., xOffset = 0., yOffset = 0.;
+    float returnValue = 100000., rayX = 0., rayY = 0., xOffset = 0., yOffset = 0.;
     int depth = 0;
 
     if(axe == 'H' && sin(toRads(rayA)) > 0.001) {
