@@ -7,9 +7,8 @@
 extern int** map;
 extern int mapHeight;
 extern int mapWidth;
-
-int screenHeight = 300;
-int screenWidth = 800;
+extern int screenHeight;
+extern int screenWidth;
 
 typedef struct Player{
     float posX;
@@ -32,9 +31,12 @@ int fixAngle(int angle){
 
 float dda(int rayA){
 
+    
+
     int depth = 0, mapX, mapY;
     float xOffset = 0., yOffset = 0., rayTan = 0., distX = 100000.f, distY = 100000.f, rayX = 0., rayY = 0.;
 
+    printf("tet");
     //--- Vertical Check ---
     rayTan = tan(toRads(rayA));
 
@@ -58,6 +60,7 @@ float dda(int rayA){
     while(depth < mapHeight){
         mapX = (int)rayX >> 6;
         mapY = (int)rayY >> 6;
+        printf("%d", mapX);
         if(map[mapX][mapY] > 0){
             depth = mapHeight;
             distX = cos(toRads(rayA)) * (rayX - p.posX) - sin(toRads(rayA)) * (rayY - p.posY);
@@ -131,10 +134,8 @@ void drawWall(float distance, const int widthIndex){
 }
 
 void rayCasting(void){
-    printf("%d", map[1][1]);
-    return;
-    /*for(int i = 0; i < 60; i++){
+    for(int i = 0; i < 60; i++){
         drawWall(dda(i), i);
     }
-    return;*/
+    return;
 }

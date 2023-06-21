@@ -7,6 +7,8 @@ SRC := ./src
 SRCFILES := BmpLib.c ErreurLib.c ESLib.c GfxLib.c OutilsLib.c SocketLib.c ThreadLib.c VectorLib.c WavLib.c
 OBJFILES := $(patsubst %.c, $(BUILDDIR)/%.o, $(SRCFILES))
 
+all: $(BUILDDIR) $(BUILDDIR)/libisentlib.a
+
 $(BUILDDIR)/libisentlib.a: $(OBJFILES)
 	ar rcs $@ $^
 	ranlib $@
@@ -14,7 +16,7 @@ $(BUILDDIR)/libisentlib.a: $(OBJFILES)
 $(BUILDDIR):
 	mkdir $(BUILDDIR)
 
-$(BUILDDIR)/%.o: $(SRC)/%.c $(BUILDDIR)
+$(BUILDDIR)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) $@ -c $<
 
 $(BUILDDIR)/GfxLib.o: $(SRC)/GfxLib.c $(INCLUDE)/GfxLib.h $(INCLUDE)/ESLib.h

@@ -7,10 +7,10 @@ SRC := ./PPB/src
 SRCFILES := main.c mapHandler.c rayCasting.c
 OBJFILES := $(patsubst %.c, $(BUILDDIR)/%.o, $(SRCFILES))
 
-all:output
+all: $(BUILDDIR) libisentlib.a output
 
-output: libisentlib.a $(OBJFILES)
-	$(CC) $(CFLAGS) $@ $(filter-out $<, $^) gfxlib/build/$< -lm -lglut -lGL -lX11
+output: $(OBJFILES)
+	$(CC) $(CFLAGS) $@ $^ gfxlib/build/libisentlib.a -lm -lglut -lGL -lX11
 
 $(BUILDDIR):
 	mkdir $(BUILDDIR)
@@ -18,7 +18,7 @@ $(BUILDDIR):
 libisentlib.a:
 	make -C gfxlib/
 
-$(BUILDDIR)/%.o: $(SRC)/%.c $(BUILDDIR)
+$(BUILDDIR)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) $@ -c $<
 
 $(BUILDDIR)/mapHandler.o: $(SRC)/mapHandler.c $(INCLUDE)/mapHandler.h
