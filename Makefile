@@ -27,4 +27,5 @@ $(BUILDDIR)/mapHandler.o: $(SRC)/mapHandler.c $(INCLUDE)/mapHandler.h
 clean:
 	make clean -C gfxlib/
 	rm -f $(BUILDDIR)/*.o
-	rm -r $(BUILDDIR)
+	rm -fr $(BUILDDIR)
+	rm -f output

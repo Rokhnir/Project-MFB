@@ -27,4 +27,4 @@ $(BUILDDIR)/WavLib.o: $(SRC)/WavLib.c $(INCLUDE)/WavLib.h $(INCLUDE)/OutilsLib.h
 
 clean:
 	rm -f $(BUILDDIR)/*.o $(BUILDDIR)/libisentlib.a
-	rm -r $(BUILDDIR)
+	rm -fr $(BUILDDIR)
