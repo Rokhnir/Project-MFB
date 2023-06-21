@@ -5,9 +5,13 @@
 #include "../include/main.h"
 #include <GL/glut.h>
 #include <math.h>
+#include <stdio.h>
 
 int screenHeight = 640;
 int screenWidth = 960;
+extern int** map;
+extern int mapWidth;
+extern int mapHeight;
 static KeysStruct Keys = {0,0,0,0};
 Player p;
 static float oldFrame = 0., newFrame = 0., fps = 0.;
@@ -15,11 +19,11 @@ static float oldFrame = 0., newFrame = 0., fps = 0.;
 int main(int argc, char **argv){
 
     createMap(0);
-    p.posX = 400;
-    p.posY = 150;
-    p.dirA = 90;
-    p.dirX = -sin(toRads(p.dirA));
-    p.dirY = cos(toRads(p.dirA));
+    p.posX = 150;
+    p.posY = 400;
+    p.dirA = 180;
+    p.dirX = cos(toRads(p.dirA));
+    p.dirY = -sin(toRads(p.dirA));
 
     initialiseGfx(argc, argv);
     prepareFenetreGraphique("Project-MBS", screenWidth, screenHeight);
@@ -50,23 +54,15 @@ void gestionEvenement(EvenementGfx evenement){
             if(Keys.q){
                 p.dirA += 0.2 * fps;
                 p.dirA = fixAngle(p.dirA);
-                p.dirX = -sin(toRads(p.dirA));
-                p.dirY = cos(toRads(p.dirA));
+                p.dirX = cos(toRads(p.dirA));
+                p.dirY = -sin(toRads(p.dirA));
             }
             else if(Keys.d){
                 p.dirA -= 0.2 * fps;
                 p.dirA = fixAngle(p.dirA);
-                p.dirX = -sin(toRads(p.dirA));
-                p.dirY = cos(toRads(p.dirA));
+                p.dirX = cos(toRads(p.dirA));
+                p.dirY = -sin(toRads(p.dirA));
             }
-            int xOffset;
-            if(p.dirX < 0) xOffset = -20;
-            else xOffset = 20;
-            int yOffset;
-            if(p.dirY < 0) yOffset = -20;
-            else yOffset = 20;
-
-
 
             if(Keys.z){
                 p.posX += p.dirX * 0.2 * fps;

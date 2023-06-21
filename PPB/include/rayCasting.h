@@ -1,5 +1,5 @@
-#ifndef DATA_H
-#define DATA_H
+#ifndef RAYCASTING_H
+#define RAYCASTING_H
 
 float toRads(float angle);
 float fixAngle(float angle);

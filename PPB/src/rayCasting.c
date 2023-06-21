@@ -4,10 +4,10 @@
 #include "../include/rayCasting.h"
 #include "../../gfxlib/include/GfxLib.h"
 #include "../include/main.h"
-
+#include <unistd.h>
 extern int** map;
-extern int mapHeight;
 extern int mapWidth;
+extern int mapHeight;
 extern int screenHeight;
 extern int screenWidth;
 extern Player p;
@@ -52,9 +52,6 @@ void rayCasting(void){
 
     }
 
-
-
-
 }
 
 float dda(const char axe, const float rayA, const float tanRayA){
@@ -62,27 +59,27 @@ float dda(const char axe, const float rayA, const float tanRayA){
     float returnValue = 100000., rayX = 0., rayY = 0., xOffset = 0., yOffset = 0.;
     int depth = 0;
 
-    if(axe == 'H' && sin(toRads(rayA)) > 0.001) {
-        rayY = (((int)p.posX >> 6) << 6) - 0.0001;
-        rayX = (p.posX - rayY) * tanRayA + p.posY;
+    if(axe == 'H' && sin(toRads(rayA)) > 0.001) { // HAUT
+        rayY = (((int)p.posY >> 6) << 6) - 0.0001;
+        rayX = (p.posY - rayY) * tanRayA + p.posX;
         yOffset = -64;
         xOffset = -yOffset * tanRayA;
     }
-    else if(axe == 'V' && cos(toRads(rayA)) > 0.001) {
+    else if(axe == 'V' && cos(toRads(rayA)) > 0.001) { // GAUCHE
         rayX = (((int)p.posX >> 6) << 6) + 64;
-        rayY = (p.posY - rayX) * tanRayA + p.posX;
+        rayY = (p.posX - rayX) * tanRayA + p.posY;
         xOffset = 64;
         yOffset = -xOffset * tanRayA;
     }
-    else if(axe == 'H' && sin(toRads(rayA)) < 0.001){
-        rayY = (((int)p.posX >> 6) << 6) + 64;
-        rayX = (p.posX - rayY) * tanRayA + p.posY;
+    else if(axe == 'H' && sin(toRads(rayA)) < -0.001){ // BAS
+        rayY = (((int)p.posY >> 6) << 6) + 64;
+        rayX = (p.posY - rayY) * tanRayA + p.posX;
         yOffset = 64;
         xOffset = -yOffset * tanRayA;
     }
-    else if(axe == 'V' && cos(toRads(rayA)) < 0.001){
+    else if(axe == 'V' && cos(toRads(rayA)) < -0.001){ // DROITE
         rayX = (((int)p.posX >> 6) << 6) - 0.0001;
-        rayY = (p.posY - rayX) * tanRayA + p.posX;
+        rayY = (p.posX - rayX) * tanRayA + p.posY;
         xOffset = -64;
         yOffset = -xOffset * tanRayA;
     }
@@ -91,19 +88,22 @@ float dda(const char axe, const float rayA, const float tanRayA){
         rayY = p.posX;
         depth = 8;
     }
-    
+
     while(depth < 8){
+        
         int mapX = (int){rayY} >> 6;
         int mapY = (int){rayX} >> 6;
-        if(0 < mapX && mapX < mapHeight && 0 < mapY && mapY < mapWidth && map[mapX][mapY] > 0){
+
+        if(0 <= mapX && mapX < mapWidth && 0 <= mapY && mapY < mapHeight && map[mapX][mapY] > 0){
             depth = 8;
-            returnValue = cos(toRads(rayA)) * (rayX - p.posY) - sin(toRads(rayA)) * (rayY - p.posX);
+            returnValue = cos(toRads(rayA)) * (rayX - p.posX) - sin(toRads(rayA)) * (rayY - p.posY);
         }
         else{
             rayX += xOffset;
             rayY += yOffset;
             depth++;
         }
+
     }
 
     return returnValue;
