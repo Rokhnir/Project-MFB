@@ -33,13 +33,22 @@ void gestionEvenement(EvenementGfx evenement){
             rafraichisFenetre();
             break;
         case Affichage:
+
             newFrame = glutGet(GLUT_ELAPSED_TIME);
             fps = newFrame - oldFrame;
             oldFrame = glutGet(GLUT_ELAPSED_TIME);
+
             effaceFenetre(0, 0, 0);
+
             if(Keys.q){
-                p.dirA += 0.2;
+                p.dirA += 0.2 * fps;
+                p.dirA = fixAngle(p.dirA);
             }
+            else if(Keys.d){
+                p.dirA -= 0.2 * fps;
+                p.dirA = fixAngle(p.dirA);
+            }
+
             rayCasting();
             break;
         case Clavier: 
