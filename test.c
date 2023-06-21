@@ -7,6 +7,8 @@
 Ennemie test;
 static int score = 0;
 static int level = 1;
+static Ennemie tab[1];
+static int tabLength = 1;
 
 static Weapon dupStep = {"Dupstep Gun",0,6,10,900,0};
 static Weapon rifle = {"Rifle",0 ,30 ,5 ,250, 0};
@@ -25,7 +27,7 @@ int main(int argc, char **argv)
     test.posx = 10;
     test.posy = 12;
     test.dammage = 10;
-    test.speed = 5;
+    test.speed = 1;
     test.rangeView = 17;
     test.rangeAttack = 17;
     test.lastMove = current_time_ms();
@@ -37,6 +39,7 @@ int main(int argc, char **argv)
     gun.lastShoot = current_time_ms();
     rifle.lastShoot = current_time_ms();*/
     player.equipped = gun;
+    tab[0] = test;
 
 
 
@@ -96,24 +99,29 @@ void iaEnnemie(Ennemie a) {
         return;
     }
     a.lastMove = current_time_ms();
-    double dist = Rdistance(a.posx, a.posy, player.posx, player.posy);
+    double dist = Rdistance((double)a.posx, (double)a.posy, (int)(player.posx / 64), (int)(player.posy / 64));
     if (dist <= a.rangeView) {
         if (dist <= a.rangeAttack) {
             player.defense(a);
         } else {
+            worldMap[a.posx][a.posy] = 0;
             double x = player.posx - a.posx;
             double y = player.posy - a.posy;
             if (fabs(x) > fabs(y)) {
                 if (x >= 0) {
                     a.posx += a.speed;
+                    worldMap[a.posx][a.posy] = -1;
                 } else {
                     a.posx -= a.speed;
+                    worldMap[a.posx][a.posy] = -1;
                 }
             } else {
                 if (y >= 0) {
                     a.posy += a.speed;
+                    worldMap[a.posx][a.posy] = -1;
                 } else {
                     a.posy -= a.speed;
+                    worldMap[a.posx][a.posy] = -1;
                 }
             }
         }
@@ -297,6 +305,7 @@ void gestionEvenement(EvenementGfx evenement){
     case Affichage:
         effaceFenetre(0, 0, 0);
         loop();
+        gereEnnemie(tab,tabLength);
         //afficheAmmo();
         //afficheHp(largeurFenetre()/4,largeurFenetre()/2);
         newHUD();
@@ -363,7 +372,15 @@ void gestionEvenement(EvenementGfx evenement){
     case ClavierSpecial:
         break;
     case BoutonSouris:
-        // switch (etatBoutonSouris()){}
+        switch (etatBoutonSouris()){
+            case GaucheAppuye:
+                int *tab2 = dda2();
+                for (int i = 0; i < tabLength; ++i) {
+                    if (tab[i].posx == tab2[0] && tab[i].posy == tab2[1]){
+                        fire(tab[i]);
+                    }
+                }
+        }
         break;
     case Souris:
         break;

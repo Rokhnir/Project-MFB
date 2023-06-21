@@ -7,8 +7,8 @@
 
 typedef struct{
     double life;
-    double posx;
-    double posy;
+    int posx;
+    int posy;
     double dammage;
     double speed;
     double rangeView;
