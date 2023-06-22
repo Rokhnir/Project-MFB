@@ -67,8 +67,8 @@ int main(int argc, char **argv) {
     lstEnnemie[1] = initEnnemie(14,4);
     lstEnnemie[2] = initEnnemie(22,10);
 
-    player.posx = 11;
-    player.posy = 12;
+    //player.posx = 11;
+    //player.posy = 12;
     player.ammo = 30;
     player.life = 100;
     player.attack = attacks;
@@ -375,7 +375,6 @@ void gestionEvenement(EvenementGfx evenement){
             break;
         case 'X':
         case 'x':
-            free(lstEnnemie);
             arret = true;
             arret_brutal_music();
             termineBoucleEvenements();
