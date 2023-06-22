@@ -9,6 +9,7 @@
 #include "../include/mapHandler.h" // mapWidth | mapHeight | map
 #include "../../gfxlib/include/BmpLib.h" // DonneesImageRGB | lisBMPRGB | ecrisImage
 #include <stdio.h> // NULL
+#include "../include/main.h"
 
 /* ----------------------------------------------------------- */
 // GLOBAL VARS
@@ -209,4 +210,79 @@ void drawEnemy(float posX, float posY, DonneesImageRGB *enemyTexture){
 
     }
 
+}
+
+
+void rayTir(int coor[2]){
+
+    float rayA = fixAngle(player.dirA);
+    float tanRayA = tan(toRads(rayA));
+
+    int coor1[2], coor2[2];
+    dda2('H', rayA, 1./tanRayA, coor1);
+    dda2('V', rayA, tanRayA , coor2);
+
+    float distH = cos(toRads(rayA)) * (coor1[0] - player.posx) - sin(toRads(rayA)) * (coor1[1] - player.posy);
+    float distV = cos(toRads(rayA)) * (coor2[0] - player.posx) - sin(toRads(rayA)) * (coor2[1] - player.posy);
+
+    if(distV < distH) coor = coor2;
+    else coor = coor1;
+
+    return;
+
+}
+
+void dda2(const char axe, const float rayA, const float tanRayA, int tab[2]) {
+
+    float rayX = 0., rayY = 0., xOffset = 0., yOffset = 0.;
+    int depth = 0, maxDepth = (axe == 'H') ? mapHeight : mapWidth;
+
+    if (axe == 'H' && sin(toRads(rayA)) > 0.001) { // HAUT
+        rayY = (((int) player.posy >> 6) << 6) - 0.0001;
+        rayX = (player.posy - rayY) * tanRayA + player.posx;
+        yOffset = -64;
+        xOffset = -yOffset * tanRayA;
+    } else if (axe == 'V' && cos(toRads(rayA)) > 0.001) { // GAUCHE
+        rayX = (((int) player.posx >> 6) << 6) + 64;
+        rayY = (player.posx - rayX) * tanRayA + player.posy;
+        xOffset = 64;
+        yOffset = -xOffset * tanRayA;
+    } else if (axe == 'H' && sin(toRads(rayA)) < -0.001) { // BAS
+        rayY = (((int) player.posy >> 6) << 6) + 64;
+        rayX = (player.posy - rayY) * tanRayA + player.posx;
+        yOffset = 64;
+        xOffset = -yOffset * tanRayA;
+    } else if (axe == 'V' && cos(toRads(rayA)) < -0.001) { // DROITE
+        rayX = (((int) player.posx >> 6) << 6) - 0.0001;
+        rayY = (player.posx - rayX) * tanRayA + player.posy;
+        xOffset = -64;
+        yOffset = -xOffset * tanRayA;
+    } else {
+        rayX = player.posy;
+        rayY = player.posx;
+        depth = maxDepth;
+    }
+
+    while(depth < maxDepth){
+
+        int mapX = (int){rayY} >> 6;
+        int mapY = (int){rayX} >> 6;
+
+        if(0 <= mapX && mapX < mapWidth && 0 <= mapY && mapY < mapHeight && map[mapX][mapY] == -1){
+            /*depth = maxDepth;
+            *color = map[mapX][mapY];
+            returnValue = cos(toRads(rayA)) * (rayX - p.posX) - sin(toRads(rayA)) * (rayY - p.posY);*/
+            tab[0] = mapX;
+            tab[1] = mapY;
+            return;
+        }
+        else{
+            rayX += xOffset;
+            rayY += yOffset;
+            depth++;
+        }
+
+    }
+    tab[0] = -1;
+    tab[1] = -1;
 }

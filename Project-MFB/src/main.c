@@ -18,6 +18,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <math.h>
+#include "../include/weapon.h"
 
 //Gestion musique + hud
 
@@ -47,6 +48,11 @@ static int score= 0;
 static int level = 1;
 static int nrbEnnemie = 3;
 static Ennemie lstEnnemie[3];
+int tab[2];
+
+static Weapon dupStep = {"Dupstep Gun",0,6,10,900,0};
+static Weapon rifle = {"Rifle",0 ,30 ,5 ,250, 0};
+static Weapon gun = {"Gun",0 ,12 ,7 ,700, 0};
 
 
 bool arret = false;
@@ -340,6 +346,8 @@ void gestionEvenement(EvenementGfx evenement){
                     fps = newFrame - oldFrame;
                     oldFrame = glutGet(GLUT_ELAPSED_TIME);
 
+                    gereEnnemie(lstEnnemie,nrbEnnemie);
+
                     effaceFenetre(0, 0, 0);
 
                     if(Keys.z) movePlayer('z');
@@ -366,24 +374,33 @@ void gestionEvenement(EvenementGfx evenement){
                     ligne((screenWidth-960)/2 + 965., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5.);
 
                     newHUD();
-                    //ui();
+                    ui();
                     break;
             }
             break;
         case Clavier:
             keyDown(caractereClavier());
             break;
-        case 'X':
-        case 'x':
-            arret = true;
-            arret_brutal_music();
-            termineBoucleEvenements();
-            //send_letter_to_buffer(caractereClavier());
 
-            //strcpy(FILENAME, "sus.wav");
-            break;
         case ClavierSpecial: break;
-        case BoutonSouris: break;
+        case BoutonSouris:
+            switch (etatBoutonSouris()){
+                case GaucheAppuye:
+                    rayTir(tab);
+                    if ((tab[0] != -1) && (tab[1] != -1)){
+                        for (int i = 0; i < nrbEnnemie; ++i) {
+                            if(lstEnnemie[i].posx == tab[0] && lstEnnemie[i].posy == tab[1]){
+                                fire(&lstEnnemie[i]);
+                                if(lstEnnemie[i].life <= 0){
+                                    lstEnnemie[i] = lstEnnemie[nrbEnnemie-1];
+                                    nrbEnnemie--;
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+            break;
         case Souris: break;
         case Inactivite: break;
         case Redimensionnement:
@@ -438,6 +455,22 @@ void keyDown(unsigned char key){
         case 'x':
             termineBoucleEvenements();
             freeMapMemory();
+            break;
+        case 'R':
+        case 'r':
+            reload(&player);
+            break;
+        case '&':
+        case '1':
+            changeWeapon(gun, &player);
+            break;
+            //case 'é':
+        case '2':
+            changeWeapon(rifle,  &player);
+            break;
+        case '"':
+        case '3':
+            changeWeapon(dupStep, &player);
             break;
         case 13:
             if(gameState == 0){

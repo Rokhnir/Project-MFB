@@ -8,8 +8,7 @@
 #include "struct.h"
 
 double Rdistance(double x1, double y1, double x2, double y2);
-/*void iaEnnemie(Ennemie a);
-void gereEnnemie(Ennemie *tab, int number);*/
+void gereEnnemie(Ennemie *tab, int number);
 unsigned long long current_time_ms();
 
 #endif //PROJECT_MFB_RAYCASTING_OUTILS_H

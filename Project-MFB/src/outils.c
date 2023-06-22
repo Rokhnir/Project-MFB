@@ -11,17 +11,18 @@
 #include "../include/outils.h"
 #include "../../gfxlib/include/GfxLib.h" // *el famoso*
 #include <time.h>
+#include "../include/main.h"
 
 
 double Rdistance(double x1, double y1, double x2, double y2){
     return sqrt( (x2 -x1) * (x2 -x1) + (y2 -y1) * (y2 -y1) );  //formule de distance entre deux point en rond
 }
 
-/*void gereEnnemie(Ennemie *tab, int number){
+void gereEnnemie(Ennemie *tab, int number){
     for (int i = 0; i < number; ++i) {
         iaEnnemie(tab[i]);
     }
-}*/
+}
 
 unsigned long long current_time_ms() {
     struct timespec now;

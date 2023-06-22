@@ -10,4 +10,6 @@ float dda(const char axe, const float rayA, const float tanRayA, float *rRayX, f
 int setColor(const int pixelIndex, const int shade, const DonneesImageRGB *wallTexture);
 void drawEnemy(float posX, float posY, DonneesImageRGB *enemyTexture);
 
+void rayTir(int coor[2]);
+void dda2(const char axe, const float rayA, const float tanRayA, int tab[2]);
 #endif

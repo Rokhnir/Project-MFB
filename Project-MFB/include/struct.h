@@ -32,8 +32,8 @@ typedef struct {
 }Weapon;
 
 typedef struct{
-    double posx;
-    double posy;
+    float posx;
+    float posy;
     int ammo;
     double life;
     void (*attack)(Ennemie*); //Pointer de fonction permet d'utiliser ses fonctions comme des méthodes approche C++
@@ -44,7 +44,7 @@ typedef struct{
     float dirY;
 }PlayerStr;
 
-
+extern  PlayerStr player;
 #endif //WORKSPACE_STRUCT_H
 
 
