@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < mapHeight; i++) {
         for (int j = 0; j < mapWidth; j++) {
-            printf("%d ", worldMap[j][i]);
+            printf("%d ", worldMap[i][j]);
         }
         printf("\n");
     }
@@ -109,17 +109,53 @@ void iaEnnemie(Ennemie a) {
             double y = player.posy - a.posy;
             if (fabs(x) > fabs(y)) {
                 if (x >= 0) {
+                    if ( worldMap[(int)(a.posx + a.speed)][a.posy] > 0 ){
+                        if (y >= 0) {
+                            a.posy += a.speed;
+                            worldMap[a.posx][a.posy] = -1;
+                        } else {
+                            a.posy -= a.speed;
+                            worldMap[a.posx][a.posy] = -1;
+                        }
+                    }
                     a.posx += a.speed;
                     worldMap[a.posx][a.posy] = -1;
                 } else {
+                    if ( worldMap[(int)(a.posx - a.speed)][a.posy] > 0 ){
+                        if (y >= 0) {
+                            a.posy += a.speed;
+                            worldMap[a.posx][a.posy] = -1;
+                        } else {
+                            a.posy -= a.speed;
+                            worldMap[a.posx][a.posy] = -1;
+                        }
+                    }
                     a.posx -= a.speed;
                     worldMap[a.posx][a.posy] = -1;
                 }
             } else {
                 if (y >= 0) {
+                    if ( worldMap[a.posx][(int)(a.posy + a.speed)] > 0 ){
+                        if (y >= 0) {
+                            a.posx += a.speed;
+                            worldMap[a.posx][a.posy] = -1;
+                        } else {
+                            a.posx -= a.speed;
+                            worldMap[a.posx][a.posy] = -1;
+                        }
+                    }
                     a.posy += a.speed;
                     worldMap[a.posx][a.posy] = -1;
                 } else {
+                    if ( worldMap[a.posx][ (int)(a.posy - a.speed)] > 0 ){
+                        if (y >= 0) {
+                            a.posx += a.speed;
+                            worldMap[a.posx][a.posy] = -1;
+                        } else {
+                            a.posx -= a.speed;
+                            worldMap[a.posx][a.posy] = -1;
+                        }
+                    }
                     a.posy -= a.speed;
                     worldMap[a.posx][a.posy] = -1;
                 }
@@ -373,13 +409,13 @@ void gestionEvenement(EvenementGfx evenement){
         break;
     case BoutonSouris:
         switch (etatBoutonSouris()){
-            case GaucheAppuye:
-                int *tab2 = dda2();
+            //case GaucheAppuye:
+                /*int *tab2 = dda2();
                 for (int i = 0; i < tabLength; ++i) {
                     if (tab[i].posx == tab2[0] && tab[i].posy == tab2[1]){
                         fire(tab[i]);
                     }
-                }
+                }*/
         }
         break;
     case Souris:
