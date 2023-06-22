@@ -25,6 +25,8 @@ void newHUD();
 void *loopThread(void *arg);
 void gameStart(void);
 
+void attacks(Ennemie *a);
+int defenses(Ennemie a);
 /*
  char Music[] = {"../../assets/music/uwu.wav"};
 */

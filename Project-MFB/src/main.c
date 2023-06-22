@@ -67,6 +67,13 @@ int main(int argc, char **argv) {
     lstEnnemie[1] = initEnnemie(14,4);
     lstEnnemie[2] = initEnnemie(22,10);
 
+    player.posx = 11;
+    player.posy = 12;
+    player.ammo = 30;
+    player.life = 100;
+    player.attack = attacks;
+    player.defense = defenses;
+
     if (loopThreadStarted == false) {
 
     createMap(1);
@@ -100,6 +107,18 @@ int main(int argc, char **argv) {
 
 }
 
+void attacks(Ennemie *a){
+    a->life -= player.equipped.dammage;
+}
+
+int defenses(Ennemie a){
+    srandom(time(NULL));
+    int x = random() % 101;
+    if (x <= 50){
+        player.life = fmax(player.life - a.dammage, 0);
+    }
+    return 0;
+}
 
 Ennemie initEnnemie(int x, int y){
     Ennemie a;
