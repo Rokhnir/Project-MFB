@@ -20,6 +20,9 @@ float fps = 0.; // Permet de garder une vitesse de déplacement constante
 static KeysStruct Keys = {0,0,0,0}; // Structure conservant l'état des touches
 static float oldFrame = 0., newFrame = 0.; // Permet le calcul des fps
 static int gameState = 0; // Stocke l'état actuel du jeu
+int nbrEnnemie = 1;
+static int tab[2];
+//Ennemie lstEnnemie[nbrEnnemie];
 
 /* ----------------------------------------------------------- */
 // FUNCTIONS
@@ -87,7 +90,26 @@ void gestionEvenement(EvenementGfx evenement){
             break;
         case ClavierSpecial: break;
         case BoutonSouris: break;
-        case Souris: break;
+        case Souris:
+            switch (etatBoutonSouris()) {
+                case GaucheAppuye:
+                    rayTir(tab);
+                    if ((tab[0] != -1) && (tab[1] != -1)){
+                        for (int i = 0; i < nbrEnnemie; ++i) {
+                            /*if(lstEnnemie[i].posX == tab[0] && lstEnnemie[i].posy == tab[1]){
+                                fire(tab[i]);
+                                if(lstEnnemie[i].life <= 0){
+                                    lstEnnemie[i] = lstEnnemie[nbrEnnemie-1];
+                                    nbrEnnemie--;
+                                    lstEnnemie = (Ennemie *)realloc(lstEnnemie, nbrEnnemie * sizeof(Ennemie) );
+                                }
+                            }*/
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
         case Inactivite: break;
         case Redimensionnement:
             screenWidth = largeurFenetre();

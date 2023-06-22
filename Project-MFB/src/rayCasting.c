@@ -147,3 +147,78 @@ void setColor(const int pixelIndex, const int shade, const DonneesImageRGB *wall
     couleurCourante(red, green, blue);
 
 }
+
+void rayTir(int coor[2]){
+
+    float rayA = fixAngle(p.dirA + 30);
+    for (int i = 0; i < 60; ++i) {
+        rayA = fixAngle(rayA - 0.5);
+    }
+    //int ray = 30;
+
+    float tanRayA = tan(toRads(rayA));
+
+    int coor1[2], coor2[2];
+    dda2('H', rayA, 1./tanRayA, coor1);
+    dda2('V', rayA, tanRayA , coor2);
+
+    if((coor2[0]== coor1[0]) && (coor2[1] == coor1[1])){
+        coor = coor1;
+    }
+
+}
+
+void dda2(const char axe, const float rayA, const float tanRayA, int tab[2]) {
+
+    float rayX = 0., rayY = 0., xOffset = 0., yOffset = 0.;
+    int depth = 0, maxDepth = (axe == 'H') ? mapHeight : mapWidth;
+
+    if (axe == 'H' && sin(toRads(rayA)) > 0.001) { // HAUT
+        rayY = (((int) p.posY >> 6) << 6) - 0.0001;
+        rayX = (p.posY - rayY) * tanRayA + p.posX;
+        yOffset = -64;
+        xOffset = -yOffset * tanRayA;
+    } else if (axe == 'V' && cos(toRads(rayA)) > 0.001) { // GAUCHE
+        rayX = (((int) p.posX >> 6) << 6) + 64;
+        rayY = (p.posX - rayX) * tanRayA + p.posY;
+        xOffset = 64;
+        yOffset = -xOffset * tanRayA;
+    } else if (axe == 'H' && sin(toRads(rayA)) < -0.001) { // BAS
+        rayY = (((int) p.posY >> 6) << 6) + 64;
+        rayX = (p.posY - rayY) * tanRayA + p.posX;
+        yOffset = 64;
+        xOffset = -yOffset * tanRayA;
+    } else if (axe == 'V' && cos(toRads(rayA)) < -0.001) { // DROITE
+        rayX = (((int) p.posX >> 6) << 6) - 0.0001;
+        rayY = (p.posX - rayX) * tanRayA + p.posY;
+        xOffset = -64;
+        yOffset = -xOffset * tanRayA;
+    } else {
+        rayX = p.posY;
+        rayY = p.posX;
+        depth = maxDepth;
+    }
+
+    while(depth < maxDepth){
+
+        int mapX = (int){rayY} >> 6;
+        int mapY = (int){rayX} >> 6;
+
+        if(0 <= mapX && mapX < mapWidth && 0 <= mapY && mapY < mapHeight && map[mapX][mapY] == -1){
+            /*depth = maxDepth;
+            *color = map[mapX][mapY];
+            returnValue = cos(toRads(rayA)) * (rayX - p.posX) - sin(toRads(rayA)) * (rayY - p.posY);*/
+            tab[0] = mapX;
+            tab[1] = mapY;
+            return;
+        }
+        else{
+            rayX += xOffset;
+            rayY += yOffset;
+            depth++;
+        }
+
+    }
+    tab[0] = -1;
+    tab[1] = -1;
+}
