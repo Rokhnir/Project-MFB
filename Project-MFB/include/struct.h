@@ -44,7 +44,7 @@ typedef struct{
     float dirY;
 }PlayerStr;
 
-static PlayerStr player;
+
 #endif //WORKSPACE_STRUCT_H
 
 

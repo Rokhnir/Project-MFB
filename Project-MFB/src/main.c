@@ -28,6 +28,8 @@
 /* ----------------------------------------------------------- */
 // GLOBAL VARS
 //
+static PlayerStr player;
+
 int screenHeight = 640; // Hauteur de la fenêtre
 int screenWidth = 960; // Largeur de la fenêtre
 float fps = 0.; // Permet de garder une vitesse de déplacement constante
@@ -221,7 +223,7 @@ void ui() {
         image = lisBMPRGB("image/pistol_front.bmp");
         pixels = BVR2ARVB1(image->largeurImage, image->hauteurImage, image->donneesRGB);
         texture = creeTexture2D(image->largeurImage, image->hauteurImage, pixels);
-        rectangleSelonTexture((largeurFenetre() / 2) - 32, hauteurFenetre() / 8, texture);
+        rectangleSelonTexture((screenWidth / 2) - 32, screenHeight / 8, texture);
 
     }
     if (strcmp(player.equipped.name, "Dupstep Gun") == 0) {
@@ -230,7 +232,7 @@ void ui() {
         image = lisBMPRGB("image/dubstep_gun_front.bmp");
         pixels = BVR2ARVB1(image->largeurImage, image->hauteurImage, image->donneesRGB);
         texture = creeTexture2D(image->largeurImage, image->hauteurImage, pixels);
-        rectangleSelonTexture((largeurFenetre() / 2) - 32, hauteurFenetre() / 8, texture);
+        rectangleSelonTexture((screenWidth / 2) - 32, screenHeight / 8, texture);
 
     }
 
@@ -238,7 +240,7 @@ void ui() {
         image = lisBMPRGB("image/fusil_front.bmp");
         pixels = BVR2ARVB1(image->largeurImage, image->hauteurImage, image->donneesRGB);
         texture = creeTexture2D(image->largeurImage, image->hauteurImage, pixels);
-        rectangleSelonTexture((largeurFenetre() / 2) - 32, hauteurFenetre() / 8, texture);
+        rectangleSelonTexture((screenWidth / 2) - 32, screenHeight / 8, texture);
 
 
     }
@@ -250,45 +252,45 @@ void ui() {
 void newHUD() {
     char buffer[7] = {0};
     couleurCourante(100, 100, 100);
-    rectangle(0, 0, largeurFenetre(), hauteurFenetre() * 0.07);
+    rectangle(0, 0, screenWidth, screenHeight * 0.07);
     couleurCourante(0, 0, 128);
 
-    rectangle(2, 0, largeurFenetre() / 9 - 2, hauteurFenetre() * 0.07);
+    rectangle(2, 0, screenWidth / 9 - 2, screenHeight * 0.07);
 
-    rectangle(largeurFenetre() / 9 + 2, 0, largeurFenetre() / 3 - 2, hauteurFenetre() * 0.07);
+    rectangle(screenWidth / 9 + 2, 0, screenWidth / 3 - 2, screenHeight * 0.07);
 
-    rectangle(largeurFenetre() / 3 + 2, 0, 4 * largeurFenetre() / 9 - 2, hauteurFenetre() * 0.07);
+    rectangle(screenWidth / 3 + 2, 0, 4 * screenWidth / 9 - 2, screenHeight * 0.07);
 
-    rectangle(4 * largeurFenetre() / 9 + 2, 0, 5 * largeurFenetre() / 9 - 2, hauteurFenetre() * 0.07);
+    rectangle(4 * screenWidth / 9 + 2, 0, 5 * screenWidth / 9 - 2, screenHeight * 0.07);
 
-    rectangle(5 * largeurFenetre() / 9 + 2, 0, 6 * largeurFenetre() / 9 - 2, hauteurFenetre() * 0.07);
+    rectangle(5 * screenWidth / 9 + 2, 0, 6 * screenWidth / 9 - 2, screenHeight * 0.07);
 
-    rectangle(6 * largeurFenetre() / 9 + 2, 0, 7 * largeurFenetre() / 9 - 2, hauteurFenetre() * 0.07);
+    rectangle(6 * screenWidth / 9 + 2, 0, 7 * screenWidth / 9 - 2, screenHeight * 0.07);
 
-    rectangle(7 * largeurFenetre() / 9 + 2, 0, largeurFenetre() - 2, hauteurFenetre() * 0.07);
+    rectangle(7 * screenWidth / 9 + 2, 0, screenWidth - 2, screenHeight * 0.07);
 
     // ecriture :
     couleurCourante(255, 255, 255);
     epaisseurDeTrait(3);
-    afficheChaine("LEVEL :", 20, 2, hauteurFenetre() * 0.045);
+    afficheChaine("LEVEL :", 20, 2, screenHeight * 0.045);
     sprintf(buffer, "%d", level);
-    afficheChaine(buffer, 30, largeurFenetre() / 18, hauteurFenetre() * 0.02);
+    afficheChaine(buffer, 30, screenWidth / 18, screenHeight * 0.02);
 
-    afficheChaine("SCORE :", 20, largeurFenetre() / 9 + 4, hauteurFenetre() * 0.045);
+    afficheChaine("SCORE :", 20, screenWidth / 9 + 4, screenHeight * 0.045);
     sprintf(buffer, "%d", score);
-    afficheChaine(buffer, 30, largeurFenetre() / 6, hauteurFenetre() * 0.02);
+    afficheChaine(buffer, 30, screenWidth / 6, screenHeight * 0.02);
 
-    afficheChaine("HEALTH :", 20, largeurFenetre() / 3 + 4, hauteurFenetre() * 0.045);
+    afficheChaine("HEALTH :", 20, screenWidth / 3 + 4, screenHeight * 0.045);
     sprintf(buffer, "%d", (int) player.life);
-    afficheChaine(buffer, 30, 7 * largeurFenetre() / 18, hauteurFenetre() * 0.02);
+    afficheChaine(buffer, 30, 7 * screenWidth / 18, screenHeight * 0.02);
 
-    afficheChaine("LOADER :", 20, 5 * largeurFenetre() / 9 + 4, hauteurFenetre() * 0.045);
+    afficheChaine("LOADER :", 20, 5 * screenWidth / 9 + 4, screenHeight * 0.045);
     sprintf(buffer, "%d", player.equipped.inLoader);
-    afficheChaine(buffer, 30, 11 * largeurFenetre() / 18, hauteurFenetre() * 0.02);
+    afficheChaine(buffer, 30, 11 * screenWidth / 18, screenHeight * 0.02);
 
-    afficheChaine("AMMO :", 20, 6 * largeurFenetre() / 9 + 4, hauteurFenetre() * 0.045);
+    afficheChaine("AMMO :", 20, 6 * screenWidth / 9 + 4, screenHeight * 0.045);
     sprintf(buffer, "%d", player.ammo);
-    afficheChaine(buffer, 30, 13 * largeurFenetre() / 18, hauteurFenetre() * 0.02);
+    afficheChaine(buffer, 30, 13 * screenWidth / 18, screenHeight * 0.02);
 }
 
 void *loopThread(void *arg) {
@@ -335,9 +337,15 @@ void gestionEvenement(EvenementGfx evenement){
 
                     rayCasting(wallTexture);
 
-                    ///posX = j * 64. + 32.;
-                    //posY = i * 64. + 32.;
-                    //drawEnemy(posX, posY, enemyTexture);
+                    for (int i = 0; i < mapWidth; ++i) {
+                        for (int j = 0; j < mapHeight; ++j) {
+                            if(map[i][j] == -1){
+                                int posX = j * 64. + 32.;
+                                int posY = i * 64. + 32.;
+                                drawEnemy(posX, posY, enemyTexture);
+                            }
+                        }
+                    }
                     epaisseurDeTrait(5.);
                     couleurCourante(255, 255, 255);
                     ligne((screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 + 645);
@@ -369,7 +377,7 @@ void gestionEvenement(EvenementGfx evenement){
         case Inactivite: break;
         case Redimensionnement:
 
-            screenWidth = largeurFenetre();
+            screenWidth = largeurFenetre()
             screenHeight = hauteurFenetre();
             break;
     }
