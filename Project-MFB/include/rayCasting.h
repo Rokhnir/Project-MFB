@@ -3,7 +3,8 @@
 
 float toRads(float angle);
 float fixAngle(float angle);
-float dda(const char axe, const float rayA, const float tanRayA);
 void rayCasting(void);
+float dda(const char axe, const float rayA, const float tanRayA, int *color);
+void setColor(const int color, const int shade);
 
 #endif

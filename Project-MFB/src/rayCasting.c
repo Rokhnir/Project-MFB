@@ -30,14 +30,21 @@ void rayCasting(void){
     for(int ray = 0; ray < 120; ray++){
 
         float tanRayA = tan(toRads(rayA));
-        float distH = dda('H', rayA, 1./tanRayA);
-        float distV = dda('V', rayA, tanRayA);
 
-        couleurCourante(255,0,0);
+        int colorH = 0, colorV = 0;
+        float distH = dda('H', rayA, 1./tanRayA, &colorH);
+        float distV = dda('V', rayA, tanRayA, &colorV);
+
+        int color = 0, shade = 1;
+
         if(distV < distH){
-            couleurCourante(155,0,0);
+            shade = 2;
+            color = colorV;
             distH = distV;
         }
+        else color = colorH;
+
+        setColor(color, shade);
 
         int lineHeight = (64 * screenHeight) / (distH * cos(toRads(fixAngle(p.dirA - rayA))));
 
@@ -55,7 +62,7 @@ void rayCasting(void){
 
 }
 
-float dda(const char axe, const float rayA, const float tanRayA){
+float dda(const char axe, const float rayA, const float tanRayA, int *color){
 
     float returnValue = 100000., rayX = 0., rayY = 0., xOffset = 0., yOffset = 0.;
     int depth = 0, maxDepth = (axe == 'H') ? mapHeight : mapWidth;
@@ -97,6 +104,7 @@ float dda(const char axe, const float rayA, const float tanRayA){
 
         if(0 <= mapX && mapX < mapWidth && 0 <= mapY && mapY < mapHeight && map[mapX][mapY] > 0){
             depth = maxDepth;
+            *color = map[mapX][mapY];
             returnValue = cos(toRads(rayA)) * (rayX - p.posX) - sin(toRads(rayA)) * (rayY - p.posY);
         }
         else{
@@ -108,5 +116,27 @@ float dda(const char axe, const float rayA, const float tanRayA){
     }
 
     return returnValue;
+
+}
+
+void setColor(const int color, const int shade){
+
+    switch(color){
+        case 1:
+            couleurCourante(255./shade, 0, 0);
+            break;
+        case 2:
+            couleurCourante(0, 255./shade, 0);
+            break;
+        case 3:
+            couleurCourante(0, 0, 255./shade);
+            break;
+        case 4:
+            couleurCourante(255./shade, 255./shade, 255./shade);
+            break;
+        case 5:
+            couleurCourante(255./shade, 0 ,255./shade);
+            break;
+    }
 
 }
