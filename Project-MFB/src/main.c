@@ -13,8 +13,8 @@
 /* ----------------------------------------------------------- */
 // GLOBAL VARS
 //
-int screenHeight = 640; // Hauteur de la fenêtre
-int screenWidth = 960; // Largeur de la fenêtre
+int screenHeight = 640; // Hauteur de la fenêtre (AR 3:2)
+int screenWidth = 960; // Largeur de la fenêtre (AR 3:2)
 float fps = 0.; // Permet de garder une vitesse de déplacement constante
 //
 static KeysStruct Keys = {0,0,0,0}; // Structure conservant l'état des touches
@@ -69,13 +69,15 @@ void gestionEvenement(EvenementGfx evenement){
                     if(Keys.s) movePlayer('s');
                     if(Keys.d) movePlayer('d');
                     
+
+                    rayCasting(wallTexture);
                     epaisseurDeTrait(5.);
                     couleurCourante(255, 255, 255);
                     ligne((screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 + 645);
                     ligne((screenWidth-960)/2 - 5., (screenHeight-640)/2 + 645, (screenWidth-960)/2 + 965., (screenHeight-640)/2 + 645);
                     ligne((screenWidth-960)/2 + 965., (screenHeight-640)/2 + 645, (screenWidth-960)/2 + 965., (screenHeight-640)/2 - 5.);
                     ligne((screenWidth-960)/2 + 965., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5.);
-                    rayCasting(wallTexture);
+                    
                     break;
             }
 
