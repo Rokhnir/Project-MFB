@@ -72,7 +72,10 @@ void gestionEvenement(EvenementGfx evenement){
                     if(Keys.d) movePlayer('d');
                     
                     rayCasting(wallTexture);
-                    drawEnemy(enemyTexture);
+
+                    ///posX = j * 64. + 32.;
+                    //posY = i * 64. + 32.;
+                    //drawEnemy(posX, posY, enemyTexture);
                     epaisseurDeTrait(5.);
                     couleurCourante(255, 255, 255);
                     ligne((screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 + 645);
