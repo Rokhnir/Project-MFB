@@ -5,27 +5,28 @@
 #include <math.h> // cos | sin
 #include "../include/rayCasting.h" // toRads | fixAngle
 #include "../include/main.h" // fps
-#include "../include/mapHandler.h" // map
+#include "../include/mapHandler.h"
+// map
 
 /* ----------------------------------------------------------- */
 // GLOBAL VAR
 //
-Player p; // Structure contenant les données du joueur
-
+// Structure contenant les données du joueur
+extern PlayerStr player;
 /* ----------------------------------------------------------- */
 // FUNCTIONS
 //
 
 void initPlayer(int posX, int posY, int dir){
 
-    p.posX = (float){posX << 6} + 32.; // << 6 = division par 64 (les cases ont une taille figurative de 64)
-    p.posY = (float){posY << 6} + 32.; // + 32 : moitiée d'un case (centre le joueur sur la case)
+    player.posx = (float){posX << 6} + 32.; // << 6 = division par 64 (les cases ont une taille figurative de 64)
+    player.posy = (float){posY << 6} + 32.; // + 32 : moitiée d'un case (centre le joueur sur la case)
 
     float direction[4] = {0., 90., 180., 270.};
-    p.dirA = direction[dir-1];
+    player.dirA = direction[dir-1];
 
-    p.dirX = cos(toRads(p.dirA));
-    p.dirY = -sin(toRads(p.dirA));
+    player.dirX = cos(toRads(player.dirA));
+    player.dirY = -sin(toRads(player.dirA));
 
 }
 
@@ -35,28 +36,28 @@ void movePlayer(char direction){
 
     switch(direction){
         case 'z':
-            newPosX = p.posX + p.dirX * 0.2 * fps;
-            newPosY = p.posY + p.dirY * 0.2 * fps;
-            if(!map[(int){p.posY} >> 6][(int){newPosX} >> 6]) p.posX = newPosX;
-            if(!map[(int){newPosY} >> 6][(int){p.posX} >> 6]) p.posY = newPosY;
+            newPosX = player.posx + player.dirX * 0.4 * fps;
+            newPosY = player.posy + player.dirY * 0.4 * fps;
+            if(map[(int){player.posy} >> 6][(int){newPosX} >> 6] < 1) player.posx = newPosX;
+            if(map[(int){newPosY} >> 6][(int){player.posx} >> 6] < 1) player.posy = newPosY;
             break;
         case 'q':
-            p.dirA += 0.2 * fps;
-            p.dirA = fixAngle(p.dirA);
-            p.dirX = cos(toRads(p.dirA));
-            p.dirY = -sin(toRads(p.dirA));
+            player.dirA += 0.2 * fps;
+            player.dirA = fixAngle(player.dirA);
+            player.dirX = cos(toRads(player.dirA));
+            player.dirY = -sin(toRads(player.dirA));
             break;
         case 's':
-            newPosX = p.posX - p.dirX * 0.2 * fps;
-            newPosY = p.posY - p.dirY * 0.2 * fps;
-            if(!map[(int){p.posY} >> 6][(int){newPosX} >> 6]) p.posX = newPosX;
-            if(!map[(int){newPosY} >> 6][(int){p.posX} >> 6]) p.posY = newPosY;
+            newPosX = player.posx - player.dirX * 0.4 * fps;
+            newPosY = player.posy - player.dirY * 0.4 * fps;
+            if(map[(int){player.posy} >> 6][(int){newPosX} >> 6] < 1) player.posx = newPosX;
+            if(map[(int){newPosY} >> 6][(int){player.posx} >> 6] < 1) player.posy = newPosY;
             break;
         case 'd':
-            p.dirA -= 0.2 * fps;
-            p.dirA = fixAngle(p.dirA);
-            p.dirX = cos(toRads(p.dirA));
-            p.dirY = -sin(toRads(p.dirA));
+            player.dirA -= 0.2 * fps;
+            player.dirA = fixAngle(player.dirA);
+            player.dirX = cos(toRads(player.dirA));
+            player.dirY = -sin(toRads(player.dirA));
             break;
     }
 

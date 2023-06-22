@@ -13,8 +13,8 @@
 
 typedef struct{
     double life;
-    double posx;
-    double posy;
+    int posx;
+    int posy;
     double dammage;
     double speed;
     double rangeView;
@@ -39,6 +39,9 @@ typedef struct{
     void (*attack)(Ennemie*); //Pointer de fonction permet d'utiliser ses fonctions comme des méthodes approche C++
     int (*defense)(Ennemie);
     Weapon equipped;
+    float dirA;
+    float dirX;
+    float dirY;
 }PlayerStr;
 
 static PlayerStr player;

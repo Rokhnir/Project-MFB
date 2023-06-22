@@ -10,11 +10,14 @@
 #include "../include/ui.h"
 #include "../include/outils.h"
 #include "../include/opacite.h"
+#include "../include/struct.h"
 #include "stdlib.h"
 #include "string.h"
 #include "stdio.h"
 #include "pthread.h"
 #include <stdbool.h>
+#include <time.h>
+#include <math.h>
 
 //Gestion musique + hud
 
@@ -32,10 +35,17 @@ float fps = 0.; // Permet de garder une vitesse de déplacement constante
 static KeysStruct Keys = {0,0,0,0}; // Structure conservant l'état des touches
 static float oldFrame = 0., newFrame = 0.; // Permet le calcul des fps
 static char Music[] = {"assets/music/DoomOSTBetter.wav"};
-static bool is_hud_draw =false;
 bool loopThreadStarted = false;
 bool loopThreadStarted2 = false;
 bool loopThreadSond = false;
+
+static int gameState = 0;
+
+static int score= 0;
+static int level = 1;
+static int nrbEnnemie = 1;
+static Ennemie *lstEnnemie;
+
 
 bool arret = false;
 char cheatCode[10] = {};
@@ -47,6 +57,137 @@ DonneesImageRGB *image = NULL;
 int *pixels = NULL;
 Texture2D *texture = NULL;
 int idArme = 0;
+
+
+int main(int argc, char **argv) {
+    srandom(time(NULL));
+    lstEnnemie = (Ennemie *)realloc(lstEnnemie, nrbEnnemie * sizeof (Ennemie));
+    for (int i = 0; i < nrbEnnemie; ++i) {
+        int x = random() %  mapWidth;
+        int y = random() %  mapHeight;
+        if (map[x][y] == 0){
+            lstEnnemie[i] = initEnnemie(x,y);
+        }
+        else{
+            i--;
+        }
+    }
+    if (loopThreadStarted == false) {
+
+    createMap(1);
+
+    initialiseGfx(argc, argv);
+
+    prepareFenetreGraphique("Project-MBS", screenWidth, screenHeight);
+
+    glutKeyboardUpFunc(keyUp); // Event glut détectant le relâchement d'une touche
+}
+//###################MUSIC###################
+
+    pthread_t thread;
+    if (loopThreadStarted == false) {
+        pthread_create(&thread, NULL, loopThread, NULL);
+        loopThreadStarted = true;
+    }
+    pthread_t thread2;
+    if (loopThreadStarted2 == false) {
+
+        pthread_create(&thread2, NULL, play_music, NULL);
+        loopThreadStarted2 = true;
+    }
+    if (arret == true) { arret_brutal_music(); }
+
+    pthread_join(thread2, NULL);
+
+    return main(argc, argv);
+
+// ###########################################
+
+}
+
+
+Ennemie initEnnemie(int x, int y){
+    Ennemie a;
+    a.life = 10;
+    a.posx = x;
+    a.posy = y;
+    a.dammage = 10;
+    a.speed = 1;
+    a.rangeView = 3;
+    a.rangeAttack = 2;
+    a.lastMove = current_time_ms();
+    return a;
+}
+
+void iaEnnemie(Ennemie a) {
+    if(a.lastMove + 33 < current_time_ms()){
+        return;
+    }
+    a.lastMove = current_time_ms();
+    double dist = Rdistance((double)a.posx, (double)a.posy, (player.posx / 64), (player.posy / 64));
+    if (dist <= a.rangeView) {
+        if (dist <= a.rangeAttack) {
+            player.defense(a);
+        } else {
+            map[a.posx][a.posy] = 0;
+            double x = player.posx - a.posx;
+            double y = player.posy - a.posy;
+            if (fabs(x) > fabs(y)) {
+                if (x >= 0) {
+                    if ( map[(int)(a.posx + a.speed)][a.posy] > 0 ){
+                        if (y >= 0) {
+                            a.posy += a.speed;
+                            map[a.posx][a.posy] = -1;
+                        } else {
+                            a.posy -= a.speed;
+                            map[a.posx][a.posy] = -1;
+                        }
+                    }
+                    a.posx += a.speed;
+                    map[a.posx][a.posy] = -1;
+                } else {
+                    if ( map[(int)(a.posx - a.speed)][a.posy] > 0 ){
+                        if (y >= 0) {
+                            a.posy += a.speed;
+                            map[a.posx][a.posy] = -1;
+                        } else {
+                            a.posy -= a.speed;
+                            map[a.posx][a.posy] = -1;
+                        }
+                    }
+                    a.posx -= a.speed;
+                    map[a.posx][a.posy] = -1;
+                }
+            } else {
+                if (y >= 0) {
+                    if ( map[a.posx][(int)(a.posy + a.speed)] > 0 ){
+                        if (y >= 0) {
+                            a.posx += a.speed;
+                            map[a.posx][a.posy] = -1;
+                        } else {
+                            a.posx -= a.speed;
+                            map[a.posx][a.posy] = -1;
+                        }
+                    }
+                    a.posy += a.speed;
+                    map[a.posx][a.posy] = -1;
+                } else {
+                    if ( map[a.posx][ (int)(a.posy - a.speed)] > 0 ){
+                        if (y >= 0) {
+                            a.posx += a.speed;
+                            map[a.posx][a.posy] = -1;
+                        } else {
+                            a.posx -= a.speed;
+                            map[a.posx][a.posy] = -1;
+                        }
+                    }
+                    a.posy -= a.speed;
+                    map[a.posx][a.posy] = -1;
+                }
+            }
+        }
+    }
+}
 
 void arret_brutal_music(void) {
     char command[256];
@@ -107,7 +248,6 @@ void ui() {
 
 }
 void newHUD() {
-    if (is_hud_draw == false){
     char buffer[7] = {0};
     couleurCourante(100, 100, 100);
     rectangle(0, 0, largeurFenetre(), hauteurFenetre() * 0.07);
@@ -131,26 +271,24 @@ void newHUD() {
     couleurCourante(255, 255, 255);
     epaisseurDeTrait(3);
     afficheChaine("LEVEL :", 20, 2, hauteurFenetre() * 0.045);
-    //sprintf(buffer, "%d", level);
-  //  afficheChaine(buffer, 30, largeurFenetre() / 18, hauteurFenetre() * 0.02);
+    sprintf(buffer, "%d", level);
+    afficheChaine(buffer, 30, largeurFenetre() / 18, hauteurFenetre() * 0.02);
 
     afficheChaine("SCORE :", 20, largeurFenetre() / 9 + 4, hauteurFenetre() * 0.045);
-    //sprintf(buffer, "%d", score);
-  //  afficheChaine(buffer, 30, largeurFenetre() / 6, hauteurFenetre() * 0.02);
+    sprintf(buffer, "%d", score);
+    afficheChaine(buffer, 30, largeurFenetre() / 6, hauteurFenetre() * 0.02);
 
     afficheChaine("HEALTH :", 20, largeurFenetre() / 3 + 4, hauteurFenetre() * 0.045);
     sprintf(buffer, "%d", (int) player.life);
     afficheChaine(buffer, 30, 7 * largeurFenetre() / 18, hauteurFenetre() * 0.02);
 
     afficheChaine("LOADER :", 20, 5 * largeurFenetre() / 9 + 4, hauteurFenetre() * 0.045);
-    // sprintf(buffer, "%d", player.equipped.inLoader);
-  //  afficheChaine(buffer, 30, 11 * largeurFenetre() / 18, hauteurFenetre() * 0.02);
+    sprintf(buffer, "%d", player.equipped.inLoader);
+    afficheChaine(buffer, 30, 11 * largeurFenetre() / 18, hauteurFenetre() * 0.02);
 
     afficheChaine("AMMO :", 20, 6 * largeurFenetre() / 9 + 4, hauteurFenetre() * 0.045);
-    // sprintf(buffer, "%d", player.ammo);
-   // afficheChaine(buffer, 30, 13 * largeurFenetre() / 18, hauteurFenetre() * 0.02);
-    //is_hud_draw = true;
-    }
+    sprintf(buffer, "%d", player.ammo);
+    afficheChaine(buffer, 30, 13 * largeurFenetre() / 18, hauteurFenetre() * 0.02);
 }
 
 void *loopThread(void *arg) {
@@ -158,74 +296,66 @@ void *loopThread(void *arg) {
 
     return NULL;
 }
-int main(int argc, char **argv) {
-    if (loopThreadStarted == false) {
 
-    createMap(1);
 
-    initialiseGfx(argc, argv);
 
-    prepareFenetreGraphique("Project-MBS", screenWidth, screenHeight);
 
-    glutKeyboardUpFunc(keyUp); // Event glut détectant le relâchement d'une touche
-}
-//###################MUSIC###################
 
-    pthread_t thread;
-    if (loopThreadStarted == false) {
-        pthread_create(&thread, NULL, loopThread, NULL);
-        loopThreadStarted = true;
-    }
-    pthread_t thread2;
-    if (loopThreadStarted2 == false) {
 
-        pthread_create(&thread2, NULL, play_music, NULL);
-        loopThreadStarted2 = true;
-    }
-    if (arret == true) { arret_brutal_music(); }
-
-    pthread_join(thread2, NULL);
-
-    return main(argc, argv);
-
-// ###########################################
-
-}
 
 void gestionEvenement(EvenementGfx evenement){
     switch(evenement){
         case Initialisation:
-
             demandeTemporisation(20);
+            gameStart();
+            static DonneesImageRGB *wallTexture = NULL;
+            wallTexture = lisBMPRGB("./assets/textures/wall.bmp");
+            static DonneesImageRGB *enemyTexture = NULL;
+            enemyTexture = lisBMPRGB("./assets/textures/enemy.bmp");
             break;
         case Temporisation:
             rafraichisFenetre();
             break;
         case Affichage:
+            switch(gameState){
+                case 0:
+                    gameStart();
+                    break;
+                default:
+                    newFrame = glutGet(GLUT_ELAPSED_TIME);
+                    fps = newFrame - oldFrame;
+                    oldFrame = glutGet(GLUT_ELAPSED_TIME);
 
-            newFrame = glutGet(GLUT_ELAPSED_TIME);
-            fps = newFrame - oldFrame;
-            oldFrame = glutGet(GLUT_ELAPSED_TIME);
+                    effaceFenetre(0, 0, 0);
 
-            effaceFenetre(0, 0, 0);
+                    if(Keys.z) movePlayer('z');
+                    if(Keys.q) movePlayer('q');
+                    if(Keys.s) movePlayer('s');
+                    if(Keys.d) movePlayer('d');
 
-            if(Keys.z) movePlayer('z');
-            if(Keys.q) movePlayer('q');
-            if(Keys.s) movePlayer('s');
-            if(Keys.d) movePlayer('d');
+                    rayCasting(wallTexture);
 
+                    ///posX = j * 64. + 32.;
+                    //posY = i * 64. + 32.;
+                    //drawEnemy(posX, posY, enemyTexture);
+                    epaisseurDeTrait(5.);
+                    couleurCourante(255, 255, 255);
+                    ligne((screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 + 645);
+                    ligne((screenWidth-960)/2 - 5., (screenHeight-640)/2 + 645, (screenWidth-960)/2 + 965., (screenHeight-640)/2 + 645);
+                    ligne((screenWidth-960)/2 + 965., (screenHeight-640)/2 + 645, (screenWidth-960)/2 + 965., (screenHeight-640)/2 - 5.);
+                    ligne((screenWidth-960)/2 + 965., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5.);
 
-            rayCasting();
-                //printf("AAAAAAA");
-                newHUD();
-
-
+                    newHUD();
+                    ui();
+                    break;
+            }
             break;
         case Clavier:
             keyDown(caractereClavier());
             break;
         case 'X':
         case 'x':
+            free(lstEnnemie);
             arret = true;
             arret_brutal_music();
             termineBoucleEvenements();
@@ -287,11 +417,23 @@ void keyDown(unsigned char key){
             break;
         case 'X':
         case 'x':
-            arret_brutal_music();
-            arret = true;
             termineBoucleEvenements();
             freeMapMemory();
             break;
+        case 13:
+            if(gameState == 0){
+                gameState = 1;
+            };
+            break;
     }
     return;
+}
+
+void gameStart(void){
+
+    modePleinEcran();
+    DonneesImageRGB *texture = NULL;
+    texture = lisBMPRGB("./assets/textures/startScreen.bmp");
+    if(texture != NULL) ecrisImage(0, 0, texture->largeurImage, texture->hauteurImage, texture->donneesRGB);
+
 }
