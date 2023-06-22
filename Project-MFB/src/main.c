@@ -45,6 +45,8 @@ void gestionEvenement(EvenementGfx evenement){
         case Initialisation:
             demandeTemporisation(20);
             gameStart();
+            static DonneesImageRGB *wallTexture = NULL;
+            wallTexture = lisBMPRGB("./assets/textures/wall.bmp");
             break;
         case Temporisation:
             rafraichisFenetre();
@@ -73,7 +75,7 @@ void gestionEvenement(EvenementGfx evenement){
                     ligne((screenWidth-960)/2 - 5., (screenHeight-640)/2 + 645, (screenWidth-960)/2 + 965., (screenHeight-640)/2 + 645);
                     ligne((screenWidth-960)/2 + 965., (screenHeight-640)/2 + 645, (screenWidth-960)/2 + 965., (screenHeight-640)/2 - 5.);
                     ligne((screenWidth-960)/2 + 965., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5.);
-                    rayCasting();
+                    rayCasting(wallTexture);
                     break;
             }
 
@@ -151,6 +153,6 @@ void gameStart(void){
     modePleinEcran();
     DonneesImageRGB *texture = NULL;
     texture = lisBMPRGB("./assets/textures/startScreen.bmp");
-    ecrisImage(0, 0, texture->largeurImage, texture->hauteurImage, texture->donneesRGB);
+    if(texture != NULL) ecrisImage(0, 0, texture->largeurImage, texture->hauteurImage, texture->donneesRGB);
 
 }

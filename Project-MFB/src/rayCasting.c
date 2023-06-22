@@ -7,8 +7,10 @@
 #include "../../gfxlib/include/GfxLib.h" // couleurCourante | ligne
 #include "../include/main.h" // 640 | 960
 #include "../include/mapHandler.h" // mapWidth | mapHeight | map
+#include "../../gfxlib/include/BmpLib.h" // DonneesImageRGB | lisBMPRGB | ecrisImage
+#include <stdio.h> // NULL
 
-
+static float returnValue = 100000., rayX = 0., rayY = 0., xOffset = 0., yOffset = 0.;
 /* ----------------------------------------------------------- */
 // FUNCTIONS
 //
@@ -23,19 +25,17 @@ float fixAngle(float angle){
     return angle;
 }
 
-void rayCasting(void){
+void rayCasting(DonneesImageRGB *wallTexture){
 
     float rayA = fixAngle(p.dirA + 30);
 
-    for(int ray = 0; ray < 240; ray++){
+    for(int ray = 0; ray < 120; ray++){
 
         float tanRayA = tan(toRads(rayA));
 
         int colorH = 0, colorV = 0;
         float distH = dda('H', rayA, 1./tanRayA, &colorH);
         float distV = dda('V', rayA, tanRayA, &colorV);
-
-
 
         int color = 0, shade = 1;
 
@@ -46,12 +46,6 @@ void rayCasting(void){
         }
         else color = colorH;
 
-
-
-        setColor(color, shade);
-
-
-
         int lineHeight = (64 * 640) / (distH * cos(toRads(fixAngle(p.dirA - rayA))));
 
         int drawStart = (-lineHeight / 2 + 640 / 2) + (screenHeight - 640) / 2;
@@ -59,10 +53,22 @@ void rayCasting(void){
         int drawEnd = (lineHeight / 2 + 640 / 2) + (screenHeight - 640) / 2;
         if(drawEnd >= 640 + (screenHeight - 640) / 2) drawEnd = (640 + (screenHeight - 640) / 2) - 1;
 
-        epaisseurDeTrait(960/240.);
-        ligne((screenWidth - 960) / 2 + (ray * 960/240.), drawStart, (screenWidth - 960) / 2 + (ray * 960/240.), drawEnd);
+        float ty = drawStart*64./lineHeight;
+        float tx;
 
-        rayA = fixAngle(rayA - 0.25);
+        if(shade==1) tx=(int){rayX/2}%64;
+        else tx=(int){rayY/2}%64;
+
+        for(int j = 0; j < lineHeight; j++){
+            int pixel = ((int){ty}*64+(int){tx})*3;
+            setColor(pixel, shade, wallTexture);
+            epaisseurDeTrait(960/120.);
+            point((screenWidth - 960) / 2 + (ray * 960/120.), j+drawStart);
+        }
+
+        //ligne((screenWidth - 960) / 2 + (ray * 960/120.), drawStart, (screenWidth - 960) / 2 + (ray * 960/120.), drawEnd);
+
+        rayA = fixAngle(rayA - 0.5);
 
     }
 
@@ -70,7 +76,7 @@ void rayCasting(void){
 
 float dda(const char axe, const float rayA, const float tanRayA, int *color){
 
-    float returnValue = 100000., rayX = 0., rayY = 0., xOffset = 0., yOffset = 0.;
+    
     int depth = 0, maxDepth = (axe == 'H') ? mapHeight : mapWidth;
 
     if(axe == 'H' && sin(toRads(rayA)) > 0.001) { // HAUT
@@ -125,24 +131,21 @@ float dda(const char axe, const float rayA, const float tanRayA, int *color){
 
 }
 
-void setColor(const int color, const int shade){
+void setColor(const int pixelIndex, const int shade, const DonneesImageRGB *wallTexture){
 
-    switch(color){
-        case 1:
-            couleurCourante(255./shade, 0, 0);
-            break;
-        case 2:
-            couleurCourante(0, 255./shade, 0);
-            break;
-        case 3:
-            couleurCourante(0, 0, 255./shade);
-            break;
-        case 4:
-            couleurCourante(255./shade, 255./shade, 255./shade);
-            break;
-        case 5:
-            couleurCourante(255./shade, 0 ,255./shade);
-            break;
-    }
+/*if(wallTextureexture != NULL) {
+        char test = texture->donneesRGB[0];
+        char fileName[27] = "";
+        snprintf(fileName, sizeof(fileName), "%d", test);
+        messageDErreur(fileName);
+    }*/
+
+    unsigned char *test = wallTexture->donneesRGB;
+
+    float red = test[pixelIndex+0]/shade;
+    float green = test[pixelIndex+1]/shade;
+    float blue = test[pixelIndex+2]/shade;
+
+    couleurCourante(red, green, blue);
 
 }
