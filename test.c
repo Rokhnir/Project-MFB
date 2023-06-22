@@ -81,6 +81,18 @@ int main(int argc, char **argv)
     return 0;
 }
 
+Ennemie initEnnemie(){
+    Ennemie a;
+    a.life = 10;
+    a.posx = 10;
+    a.posy = 12;
+    a.dammage = 10;
+    a.speed = 1;
+    a.rangeView = 3;
+    a.rangeAttack = 2;
+    a.lastMove = current_time_ms();
+}
+
 void attacks(Ennemie *a){
     a->life -= player.equipped.dammage;
 }
@@ -99,7 +111,7 @@ void iaEnnemie(Ennemie a) {
         return;
     }
     a.lastMove = current_time_ms();
-    double dist = Rdistance((double)a.posx, (double)a.posy, (int)(player.posx / 64), (int)(player.posy / 64));
+    double dist = Rdistance((double)a.posx, (double)a.posy, (player.posx / 64), (player.posy / 64));
     if (dist <= a.rangeView) {
         if (dist <= a.rangeAttack) {
             player.defense(a);
