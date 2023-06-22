@@ -12,7 +12,7 @@
 // GLOBAL VAR
 //
 // Structure contenant les données du joueur
-extern PlayerStr player;
+PlayerStr player;
 /* ----------------------------------------------------------- */
 // FUNCTIONS
 //

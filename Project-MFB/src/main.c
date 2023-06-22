@@ -28,7 +28,6 @@
 /* ----------------------------------------------------------- */
 // GLOBAL VARS
 //
-static PlayerStr player;
 
 int screenHeight = 640; // Hauteur de la fenêtre
 int screenWidth = 960; // Largeur de la fenêtre
@@ -373,15 +372,6 @@ void gestionEvenement(EvenementGfx evenement){
         case Clavier:
             keyDown(caractereClavier());
             break;
-        case 'X':
-        case 'x':
-            arret = true;
-            arret_brutal_music();
-            termineBoucleEvenements();
-            //send_letter_to_buffer(caractereClavier());
-
-            //strcpy(FILENAME, "sus.wav");
-            break;
         case ClavierSpecial: break;
         case BoutonSouris: break;
         case Souris: break;
@@ -438,6 +428,8 @@ void keyDown(unsigned char key){
         case 'x':
             termineBoucleEvenements();
             freeMapMemory();
+            arret = true;
+            arret_brutal_music();
             break;
         case 13:
             if(gameState == 0){
