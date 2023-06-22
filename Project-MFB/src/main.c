@@ -282,6 +282,7 @@ void keyDown(unsigned char key){
         case 'X':
         case 'x':
             arret_brutal_music();
+            arret = true;
             termineBoucleEvenements();
             freeMapMemory();
             break;
