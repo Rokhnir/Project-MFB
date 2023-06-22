@@ -4,7 +4,7 @@ CFLAGS := -Wall -O2 -o
 BUILDDIR := ./Project-MFB/build
 INCLUDE := ./Project-MFB/include
 SRC := ./Project-MFB/src
-SRCFILES := main.c mapHandler.c playerHandler.c rayCasting.c ui.c weapon.c outils.c opacité.c
+SRCFILES := main.c mapHandler.c playerHandler.c rayCasting.c weapon.c outils.c opacité.c
 OBJFILES := $(patsubst %.c, $(BUILDDIR)/%.o, $(SRCFILES))
 
 all: $(BUILDDIR) libisentlib.a output

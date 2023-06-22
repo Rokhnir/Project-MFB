@@ -17,11 +17,11 @@ void keyUp(unsigned char key, int x, int y);
 /*
  char Music[] = {"../../assets/music/uwu.wav"};
 */
- bool loopThreadStarted = false;
+/* bool loopThreadStarted = false;
  bool loopThreadStarted2 = false;
  bool loopThreadSond = false;
 
  bool arret = false;
- char cheatCode[10] = {};
+ char cheatCode[10] = {};*/
 
 #endif

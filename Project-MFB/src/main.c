@@ -33,6 +33,12 @@ static KeysStruct Keys = {0,0,0,0}; // Structure conservant l'état des touches
 static float oldFrame = 0., newFrame = 0.; // Permet le calcul des fps
 static char Music[] = {"assets/music/DoomOSTBetter.wav"};
 static bool is_hud_draw =false;
+bool loopThreadStarted = false;
+bool loopThreadStarted2 = false;
+bool loopThreadSond = false;
+
+bool arret = false;
+char cheatCode[10] = {};
 /* ----------------------------------------------------------- */
 // FUNCTIONS
 //
