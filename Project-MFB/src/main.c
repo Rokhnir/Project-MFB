@@ -7,6 +7,8 @@
 #include <GL/glut.h> // glutKeyboardUpFunc | glutget | GLUT_ELAPSED_TIME
 #include "../include/playerHandler.h" // movePlayer
 #include "../include/rayCasting.h" // rayCasting
+#include "../../gfxlib/include/BmpLib.h" // DonneesImageRGB | lisBMPRGB | ecrisImage
+#include <stdio.h> // NULL
 
 /* ----------------------------------------------------------- */
 // GLOBAL VARS
@@ -17,6 +19,7 @@ float fps = 0.; // Permet de garder une vitesse de déplacement constante
 //
 static KeysStruct Keys = {0,0,0,0}; // Structure conservant l'état des touches
 static float oldFrame = 0., newFrame = 0.; // Permet le calcul des fps
+static int gameState = 0; // Stocke l'état actuel du jeu
 
 /* ----------------------------------------------------------- */
 // FUNCTIONS
@@ -41,24 +44,38 @@ void gestionEvenement(EvenementGfx evenement){
     switch(evenement){
         case Initialisation:
             demandeTemporisation(20);
+            gameStart();
             break;
         case Temporisation:
             rafraichisFenetre();
             break;
         case Affichage:
 
-            newFrame = glutGet(GLUT_ELAPSED_TIME);
-            fps = newFrame - oldFrame;
-            oldFrame = glutGet(GLUT_ELAPSED_TIME);
+            switch(gameState){
+                case 0:
+                    gameStart();
+                    break;
+                default:
+                    newFrame = glutGet(GLUT_ELAPSED_TIME);
+                    fps = newFrame - oldFrame;
+                    oldFrame = glutGet(GLUT_ELAPSED_TIME);
 
-            effaceFenetre(0, 0, 0);
+                    effaceFenetre(0, 0, 0);
 
-            if(Keys.z) movePlayer('z');
-            if(Keys.q) movePlayer('q');
-            if(Keys.s) movePlayer('s');
-            if(Keys.d) movePlayer('d');
-
-            rayCasting();
+                    if(Keys.z) movePlayer('z');
+                    if(Keys.q) movePlayer('q');
+                    if(Keys.s) movePlayer('s');
+                    if(Keys.d) movePlayer('d');
+                    
+                    epaisseurDeTrait(5.);
+                    couleurCourante(255, 255, 255);
+                    ligne((screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 + 645);
+                    ligne((screenWidth-960)/2 - 5., (screenHeight-640)/2 + 645, (screenWidth-960)/2 + 965., (screenHeight-640)/2 + 645);
+                    ligne((screenWidth-960)/2 + 965., (screenHeight-640)/2 + 645, (screenWidth-960)/2 + 965., (screenHeight-640)/2 - 5.);
+                    ligne((screenWidth-960)/2 + 965., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5.);
+                    rayCasting();
+                    break;
+            }
 
             break;
         case Clavier: 
@@ -120,6 +137,20 @@ void keyDown(unsigned char key){
             termineBoucleEvenements();
             freeMapMemory();
             break;
+        case 13:
+            if(gameState == 0){
+                gameState = 1;
+            };
+            break;
     }
     return;
+}
+
+void gameStart(void){
+
+    modePleinEcran();
+    DonneesImageRGB *texture = NULL;
+    texture = lisBMPRGB("./assets/textures/startScreen.bmp");
+    ecrisImage(0, 0, texture->largeurImage, texture->hauteurImage, texture->donneesRGB);
+
 }

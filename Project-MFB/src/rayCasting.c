@@ -5,7 +5,7 @@
 #include <math.h> // M_PI | tan | sin | cos
 #include "../include/playerHandler.h" // p.dirA | p.posX | p.posY
 #include "../../gfxlib/include/GfxLib.h" // couleurCourante | ligne
-#include "../include/main.h" // screenHeight | screenWidth
+#include "../include/main.h" // 640 | 960
 #include "../include/mapHandler.h" // mapWidth | mapHeight | map
 
 
@@ -27,7 +27,7 @@ void rayCasting(void){
 
     float rayA = fixAngle(p.dirA + 30);
 
-    for(int ray = 0; ray < 120; ray++){
+    for(int ray = 0; ray < 240; ray++){
 
         float tanRayA = tan(toRads(rayA));
 
@@ -46,21 +46,23 @@ void rayCasting(void){
         }
         else color = colorH;
 
+
+
         setColor(color, shade);
 
-        
 
-        int lineHeight = (64 * screenHeight) / (distH * cos(toRads(fixAngle(p.dirA - rayA))));
 
-        int drawStart = -lineHeight / 2 + screenHeight / 2;
-        if(drawStart < 0)drawStart = 0;
-        int drawEnd = lineHeight / 2 + screenHeight / 2;
-        if(drawEnd >= screenHeight)drawEnd = screenHeight - 1;
+        int lineHeight = (64 * 640) / (distH * cos(toRads(fixAngle(p.dirA - rayA))));
 
-        epaisseurDeTrait(screenWidth/120.);
-        ligne(ray * screenWidth/120., drawStart, ray * screenWidth/120., drawEnd);
+        int drawStart = (-lineHeight / 2 + 640 / 2) + (screenHeight - 640) / 2;
+        if(drawStart < (screenHeight - 640) / 2) drawStart = (screenHeight - 640) / 2;
+        int drawEnd = (lineHeight / 2 + 640 / 2) + (screenHeight - 640) / 2;
+        if(drawEnd >= 640 + (screenHeight - 640) / 2) drawEnd = (640 + (screenHeight - 640) / 2) - 1;
 
-        rayA = fixAngle(rayA - 0.5);
+        epaisseurDeTrait(960/240.);
+        ligne((screenWidth - 960) / 2 + (ray * 960/240.), drawStart, (screenWidth - 960) / 2 + (ray * 960/240.), drawEnd);
+
+        rayA = fixAngle(rayA - 0.25);
 
     }
 

@@ -11,5 +11,6 @@ typedef struct{
 
 void keyDown(unsigned char key);
 void keyUp(unsigned char key, int x, int y);
+void gameStart(void);
 
 #endif
