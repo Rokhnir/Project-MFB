@@ -129,7 +129,7 @@ void newHUD() {
 
     // ecriture :
     couleurCourante(255, 255, 255);
-
+    epaisseurDeTrait(3);
     afficheChaine("LEVEL :", 20, 2, hauteurFenetre() * 0.045);
     //sprintf(buffer, "%d", level);
   //  afficheChaine(buffer, 30, largeurFenetre() / 18, hauteurFenetre() * 0.02);
