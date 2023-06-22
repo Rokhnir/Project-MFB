@@ -45,8 +45,8 @@ static int gameState = 0;
 
 static int score= 0;
 static int level = 1;
-static int nrbEnnemie = 1;
-static Ennemie *lstEnnemie;
+static int nrbEnnemie = 3;
+static Ennemie lstEnnemie[3];
 
 
 bool arret = false;
@@ -62,18 +62,11 @@ int idArme = 0;
 
 
 int main(int argc, char **argv) {
-    srandom(time(NULL));
-    lstEnnemie = (Ennemie *)realloc(lstEnnemie, nrbEnnemie * sizeof (Ennemie));
-    for (int i = 0; i < nrbEnnemie; ++i) {
-        int x = random() %  mapWidth;
-        int y = random() %  mapHeight;
-        if (map[x][y] == 0){
-            lstEnnemie[i] = initEnnemie(x,y);
-        }
-        else{
-            i--;
-        }
-    }
+
+    lstEnnemie[0] = initEnnemie(2,2);
+    lstEnnemie[1] = initEnnemie(14,4);
+    lstEnnemie[2] = initEnnemie(22,10);
+
     if (loopThreadStarted == false) {
 
     createMap(1);
@@ -354,7 +347,7 @@ void gestionEvenement(EvenementGfx evenement){
                     ligne((screenWidth-960)/2 + 965., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5.);
 
                     newHUD();
-                    ui();
+                    //ui();
                     break;
             }
             break;
@@ -377,7 +370,7 @@ void gestionEvenement(EvenementGfx evenement){
         case Inactivite: break;
         case Redimensionnement:
 
-            screenWidth = largeurFenetre()
+            screenWidth = largeurFenetre();
             screenHeight = hauteurFenetre();
             break;
     }
