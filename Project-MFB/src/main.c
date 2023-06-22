@@ -426,10 +426,10 @@ void keyDown(unsigned char key){
             break;
         case 'X':
         case 'x':
-            termineBoucleEvenements();
             freeMapMemory();
             arret = true;
             arret_brutal_music();
+            termineBoucleEvenements();
             break;
         case 13:
             if(gameState == 0){
