@@ -8,28 +8,20 @@ A final project whose goal is to remake a simplified version of Wolfenstein usin
 - [Controls](#controls)
 - [License](#license)
 
-## Preview of actual development :
-`First person view :`&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&ensp;`Top view :`<br><br>
-<img src="assets/README - IMG/front_view.png" alt=“First_person_view” width="300px" height="300"></img>
-<img src="assets/README - IMG/top_view.png" alt=“View_from_the_top” width="300px" height="300"></img>
-<br><br>
-`Raycasting FOV`<br><br>
-<img src="assets/README - IMG/raycasting_fov.gif" alt=“View_from_the_top” width="300px" height="300"></img>
-
 # Objectives
 
- - Setup of the ray casting : Ongoing
- - Setup of the Fake3D : To come
- - Creation of a basic room : To come
- - IA for the NPCs : To come
- - Qualitative textures : To come
+ - Setup of the ray casting : Done
+ - Creation of a basic room : Done
+ - IA for the NPCs : Done
+ - Qualitative textures : Done
 
 
 # Main mechanics
 
  - Ray casting
- - Fake3D
- - To come
+ - NPCs
+ - Sound motor
+ - Weapons
 
 
 # Controls
@@ -37,7 +29,7 @@ A final project whose goal is to remake a simplified version of Wolfenstein usin
  - Z for moving forward
  - S for moving backward
  - Q and D for the camera
- - To come
+ - Left click for shoting
 
 
 # License
