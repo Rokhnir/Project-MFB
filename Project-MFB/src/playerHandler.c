@@ -35,10 +35,10 @@ void movePlayer(char direction){
 
     switch(direction){
         case 'z':
-            newPosX = p.posX + p.dirX * 0.2 * fps;
-            newPosY = p.posY + p.dirY * 0.2 * fps;
-            if(!map[(int){p.posY} >> 6][(int){newPosX} >> 6]) p.posX = newPosX;
-            if(!map[(int){newPosY} >> 6][(int){p.posX} >> 6]) p.posY = newPosY;
+            newPosX = p.posX + p.dirX * 0.4 * fps;
+            newPosY = p.posY + p.dirY * 0.4 * fps;
+            if(map[(int){p.posY} >> 6][(int){newPosX} >> 6] < 1) p.posX = newPosX;
+            if(map[(int){newPosY} >> 6][(int){p.posX} >> 6] < 1) p.posY = newPosY;
             break;
         case 'q':
             p.dirA += 0.2 * fps;
@@ -47,10 +47,10 @@ void movePlayer(char direction){
             p.dirY = -sin(toRads(p.dirA));
             break;
         case 's':
-            newPosX = p.posX - p.dirX * 0.2 * fps;
-            newPosY = p.posY - p.dirY * 0.2 * fps;
-            if(!map[(int){p.posY} >> 6][(int){newPosX} >> 6]) p.posX = newPosX;
-            if(!map[(int){newPosY} >> 6][(int){p.posX} >> 6]) p.posY = newPosY;
+            newPosX = p.posX - p.dirX * 0.4 * fps;
+            newPosY = p.posY - p.dirY * 0.4 * fps;
+            if(map[(int){p.posY} >> 6][(int){newPosX} >> 6] < 1) p.posX = newPosX;
+            if(map[(int){newPosY} >> 6][(int){p.posX} >> 6] < 1) p.posY = newPosY;
             break;
         case 'd':
             p.dirA -= 0.2 * fps;

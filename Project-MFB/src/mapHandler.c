@@ -48,7 +48,7 @@ void createMap(const int levelIndex){
 
                 if(map[i][j] < 0){ // Si < 0 dans le fichier : pos du spawn joueur
                     initPlayer(j, i, map[i][j] * -1); // La valeur de la case : direction (-1 = droite, -2 = haut...)
-                    map[i][j] = 0; // Les coordonnées du spawn joueur d'apparaissent pas dans le tableau 2D
+                    //map[i][j] = 0; // Les coordonnées du spawn joueur d'apparaissent pas dans le tableau 2D
                 }
 
             }

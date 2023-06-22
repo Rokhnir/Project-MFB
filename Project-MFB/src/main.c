@@ -46,7 +46,9 @@ void gestionEvenement(EvenementGfx evenement){
             demandeTemporisation(20);
             gameStart();
             static DonneesImageRGB *wallTexture = NULL;
-            wallTexture = lisBMPRGB("./assets/textures/wall.bmp");
+                wallTexture = lisBMPRGB("./assets/textures/wall.bmp");
+            static DonneesImageRGB *enemyTexture = NULL;
+                enemyTexture = lisBMPRGB("./assets/textures/enemy.bmp");
             break;
         case Temporisation:
             rafraichisFenetre();
@@ -69,8 +71,8 @@ void gestionEvenement(EvenementGfx evenement){
                     if(Keys.s) movePlayer('s');
                     if(Keys.d) movePlayer('d');
                     
-
                     rayCasting(wallTexture);
+                    drawEnemy(enemyTexture);
                     epaisseurDeTrait(5.);
                     couleurCourante(255, 255, 255);
                     ligne((screenWidth-960)/2 - 5., (screenHeight-640)/2 - 5., (screenWidth-960)/2 - 5., (screenHeight-640)/2 + 645);
