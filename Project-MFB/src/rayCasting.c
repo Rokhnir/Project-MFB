@@ -150,21 +150,20 @@ void setColor(const int pixelIndex, const int shade, const DonneesImageRGB *wall
 
 void rayTir(int coor[2]){
 
-    float rayA = fixAngle(p.dirA + 30);
-    for (int i = 0; i < 60; ++i) {
-        rayA = fixAngle(rayA - 0.5);
-    }
-    //int ray = 30;
-
+    float rayA = fixAngle(p.dirA);
     float tanRayA = tan(toRads(rayA));
 
     int coor1[2], coor2[2];
     dda2('H', rayA, 1./tanRayA, coor1);
     dda2('V', rayA, tanRayA , coor2);
 
-    if((coor2[0]== coor1[0]) && (coor2[1] == coor1[1])){
-        coor = coor1;
-    }
+    distH = cos(toRads(rayA) * (coor1[0] - p.posX) - sin(toRads(rayA) * (coor1[1] - p.posY);
+    distV = cos(toRads(rayA) * (coor2[0] - p.posX) - sin(toRads(rayA) * (coor2[1] - p.posY);
+
+    if(distV < distH) coor = coor2;
+    else coor = coor1;
+
+    return;
 
 }
 
