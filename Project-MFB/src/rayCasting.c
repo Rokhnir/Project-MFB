@@ -164,8 +164,6 @@ int setColor(const int pixelIndex, const int shade, const DonneesImageRGB *wallT
 
 void drawEnemy(float posX, float posY, DonneesImageRGB *enemyTexture){
 
-    float posX = 0., posY = 0;
-
     float screenPosX = posX - p.posX;
     float screenPosY = posY - p.posY;
 
