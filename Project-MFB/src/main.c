@@ -29,7 +29,7 @@ int main(int argc, char **argv){
     
     prepareFenetreGraphique("Project-MBS", screenWidth, screenHeight);
     
-    glutKeyboardUpFunc(keyUp);
+    glutKeyboardUpFunc(keyUp); // Event glut détectant le relâchement d'une touche
 
     lanceBoucleEvenements();
     

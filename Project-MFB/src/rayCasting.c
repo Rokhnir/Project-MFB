@@ -35,6 +35,8 @@ void rayCasting(void){
         float distH = dda('H', rayA, 1./tanRayA, &colorH);
         float distV = dda('V', rayA, tanRayA, &colorV);
 
+
+
         int color = 0, shade = 1;
 
         if(distV < distH){
@@ -45,6 +47,8 @@ void rayCasting(void){
         else color = colorH;
 
         setColor(color, shade);
+
+        
 
         int lineHeight = (64 * screenHeight) / (distH * cos(toRads(fixAngle(p.dirA - rayA))));
 
